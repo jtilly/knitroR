@@ -1,0 +1,3 @@
+useDynLib(knitroR)
+exportPattern("^[[:alpha:]]+")
+importFrom(Rcpp, evalCpp)
