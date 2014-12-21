@@ -1,8 +1,18 @@
-## Use the R_HOME indirection to support installations of multiple R version
+# Use R_HHOME to support multiple R installations
 PKG_LIBS = `$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()"`
 
-#KNITRO = /Users/jtilly/knitro9
+# get system type
+UNAME = $(shell uname -s)
 
-# hardcoding these for now
-PKG_LIBS += -L$(KNITRO)/lib -dynamiclib $(KNITRO)/lib/libknitro.dylib
+# linux
+ifeq ($(findstring Linux,${UNAME}), Linux)
+	PKG_LIBS += -L$(KNITRO)/lib -dynamiclib $(KNITRO)/lib/libknitro.so
+endif
+
+# mac
+ifeq ($(findstring Darwin,${UNAME}), Darwin)
+	PKG_LIBS += -L$(KNITRO)/lib -dynamiclib $(KNITRO)/lib/libknitro.dylib
+endif
+
+# add include directory
 PKG_CXXFLAGS = -I$(KNITRO)/include 

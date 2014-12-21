@@ -3,6 +3,7 @@
 
 using namespace Rcpp;
 
+
 /* callback function that evaluates the objective
    and constraints */
 int  callback (const int evalRequestCode,
@@ -82,7 +83,7 @@ int  callback (const int evalRequestCode,
 
 
 // [[Rcpp::export]]
-NumericVector knitroCon(List fcts, NumericVector startValues, int m) {
+NumericVector knitroCon(List fcts, NumericVector startValues, int m, CharacterVector optionsFile) {
     
         // let's make a pointer to a list
         List * fctsPointer = &fcts;
@@ -146,18 +147,8 @@ NumericVector knitroCon(List fcts, NumericVector startValues, int m) {
         if (kc == NULL)
                 exit( -1 ); // probably a license issue
 
-        /* set options: automatic gradient and hessian matrix */
-        if (KTR_set_int_param_by_name (kc, "gradopt", KTR_GRADOPT_EXACT) != 0)
-                exit( -1 );
-        if (KTR_set_int_param_by_name (kc, "honorbnds", KTR_HONORBNDS_NO) != 0)
-                exit( -1 );
-        if (KTR_set_int_param_by_name (kc, "hessopt", KTR_HESSOPT_BFGS) != 0)
-                exit( -1 );
-        if (KTR_set_int_param_by_name (kc, "outlev", KTR_OUTLEV_ITER_VERBOSE) != 0)
-                exit( -1 );
-        if (KTR_set_int_param_by_name (kc, "derivcheck", KTR_DERIVCHECK_FIRST) != 0)
-                exit( -1 );
-                
+        /* set options via textfile*/
+        nStatus = KTR_load_param_file (kc, optionsFile[0]);
 
         /* register the callback function */
         if (KTR_set_func_callback (kc, &callback) != 0)
@@ -208,6 +199,6 @@ NumericVector knitroCon(List fcts, NumericVector startValues, int m) {
 }
 
 // [[Rcpp::export]]
-NumericVector knitroUnc(List fcts, NumericVector startValues) {
-    return knitroCon(fcts, startValues, 0);
+NumericVector knitroUnc(List fcts, NumericVector startValues, CharacterVector optionsFile) {
+    return knitroCon(fcts, startValues, 0, optionsFile);
 }

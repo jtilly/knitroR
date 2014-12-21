@@ -6,8 +6,8 @@
 using namespace Rcpp;
 
 // knitroCon
-NumericVector knitroCon(List fcts, NumericVector startValues, int m);
-RcppExport SEXP knitroR_knitroCon(SEXP fctsSEXP, SEXP startValuesSEXP, SEXP mSEXP) {
+NumericVector knitroCon(List fcts, NumericVector startValues, int m, CharacterVector optionsFile);
+RcppExport SEXP knitroR_knitroCon(SEXP fctsSEXP, SEXP startValuesSEXP, SEXP mSEXP, SEXP optionsFileSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
@@ -15,7 +15,8 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< List >::type fcts(fctsSEXP );
         Rcpp::traits::input_parameter< NumericVector >::type startValues(startValuesSEXP );
         Rcpp::traits::input_parameter< int >::type m(mSEXP );
-        NumericVector __result = knitroCon(fcts, startValues, m);
+        Rcpp::traits::input_parameter< CharacterVector >::type optionsFile(optionsFileSEXP );
+        NumericVector __result = knitroCon(fcts, startValues, m, optionsFile);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);
@@ -23,15 +24,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // knitroUnc
-NumericVector knitroUnc(List fcts, NumericVector startValues);
-RcppExport SEXP knitroR_knitroUnc(SEXP fctsSEXP, SEXP startValuesSEXP) {
+NumericVector knitroUnc(List fcts, NumericVector startValues, CharacterVector optionsFile);
+RcppExport SEXP knitroR_knitroUnc(SEXP fctsSEXP, SEXP startValuesSEXP, SEXP optionsFileSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
         Rcpp::RNGScope __rngScope;
         Rcpp::traits::input_parameter< List >::type fcts(fctsSEXP );
         Rcpp::traits::input_parameter< NumericVector >::type startValues(startValuesSEXP );
-        NumericVector __result = knitroUnc(fcts, startValues);
+        Rcpp::traits::input_parameter< CharacterVector >::type optionsFile(optionsFileSEXP );
+        NumericVector __result = knitroUnc(fcts, startValues, optionsFile);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);
