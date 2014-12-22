@@ -59,11 +59,11 @@ int  callback (const int evalRequestCode,
         
             if(m>0) {
                 Function rJacobian = listFcts["jac"];
-                NumericVector jacobian; 
+                NumericVector jacobian(nnzJ); 
                 jacobian = rJacobian(xVector);            
                     
-                for (int kX = 0; kX < m*n; kX++) {                        
-                        jac[kX] = jacobian[kX];
+                for (int kX = 0; kX < nnzJ; kX++) {                        
+                    jac[kX] = jacobian[kX];
                 }
             }
             
@@ -83,7 +83,9 @@ int  callback (const int evalRequestCode,
 
 
 // [[Rcpp::export]]
-NumericVector knitroCpp(List fcts, NumericVector startValues, int m, List options, CharacterVector optionsFile) {
+NumericVector knitroCpp(List fcts, NumericVector startValues, int m, int nnzJ, NumericVector RjacIndexCons, NumericVector RjacIndexVars, List options, CharacterVector optionsFile) {
+    
+        
     
         // let's make a pointer to a list
         List * fctsPointer = &fcts;
@@ -92,7 +94,7 @@ NumericVector knitroCpp(List fcts, NumericVector startValues, int m, List option
 
         /* variables that are passed to KNITRO */
         KTR_context *kc;
-        int n, nnzJ, nnzH, objGoal, objType;
+        int n, nnzH, objGoal, objType;
         int *cType;
         int *jacIndexVars, *jacIndexCons;
         double obj, *x, *lambda;
@@ -101,7 +103,6 @@ NumericVector knitroCpp(List fcts, NumericVector startValues, int m, List option
 
         /*problem size and mem allocation */
         n = startValues.length();
-        nnzJ = n*m;
         nnzH = 0;
         x = (double *) malloc (n * sizeof(double));
         lambda = (double *) malloc ((m+n) * sizeof(double));
@@ -135,35 +136,37 @@ NumericVector knitroCpp(List fcts, NumericVector startValues, int m, List option
                 xInitial[i] = startValues[i];
 
         /* sparsity pattern (here, of a full matrix) */
-        k = 0;
-        for (i = 0; i < n; i++)
-                for (j = 0; j < m; j++) {
-                        jacIndexCons[k] = j;
-                        jacIndexVars[k] = i;
-                        k++;
-                }
-        /* create a KNITRO instance */
+        if(m>0 && nnzJ>0) {
+
+            //std::cout << Jacobian.nrow() << " " << Jacobian.ncol() << "\n";
+            for (k = 0; k < nnzJ; k++) {
+                jacIndexCons[k] = RjacIndexCons[k];
+                jacIndexVars[k] = RjacIndexVars[k];
+            }
+        }
+
+        // create a KNITRO instance 
         kc = KTR_new();
         if (kc == NULL)
                 exit( -1 ); // probably a license issue
 
-        /* set options via textfile*/
+        // set options via textfile
         nStatus = KTR_load_param_file (kc, optionsFile[0]);
         
-        /* register the callback function */
+        // register the callback function 
         if (KTR_set_func_callback (kc, &callback) != 0)
                 exit( -1 );
         if (KTR_set_grad_callback (kc, &callback) != 0)
                 exit( -1 );
 
-        /* pass the problem definition to KNITRO */
+        // pass the problem definition to KNITRO 
         nStatus = KTR_init_problem (kc, n, objGoal, objType,
                         xLoBnds, xUpBnds,
                         m, cType, cLoBnds, cUpBnds,
                         nnzJ, jacIndexVars, jacIndexCons,
                         nnzH, NULL, NULL, xInitial, NULL);
 
-        /* free memory (KNITRO maintains its own copy) */
+        // free memory (KNITRO maintains its own copy) 
         free (xLoBnds);
         free (xUpBnds);
         free (xInitial);
@@ -173,8 +176,7 @@ NumericVector knitroCpp(List fcts, NumericVector startValues, int m, List option
         free (jacIndexVars);
         free (jacIndexCons);
 
-
-        /* solver call */
+        // solver call 
         nStatus = KTR_solve (kc, x, lambda, 0, &obj,
                 NULL, NULL, NULL, NULL, NULL, fctsPointer);
 
@@ -184,9 +186,9 @@ NumericVector knitroCpp(List fcts, NumericVector startValues, int m, List option
         else
                 printf ("\nKNITRO successful, objective is = %e\n", obj);
 
-        /* delete the KNITRO instance and primal/dual solution */
+        // delete the KNITRO instance and primal/dual solution 
         KTR_free (&kc);
-
+        
         NumericVector finalEstimates(n);
         for(int jX=0;jX<n;jX++) {
 	        finalEstimates[jX] = x[jX];
@@ -195,5 +197,6 @@ NumericVector knitroCpp(List fcts, NumericVector startValues, int m, List option
         free (x);
         free (lambda);
 
+        
         return( finalEstimates );
 }

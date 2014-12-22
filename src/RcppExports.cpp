@@ -6,8 +6,8 @@
 using namespace Rcpp;
 
 // knitroCpp
-NumericVector knitroCpp(List fcts, NumericVector startValues, int m, List options, CharacterVector optionsFile);
-RcppExport SEXP knitroR_knitroCpp(SEXP fctsSEXP, SEXP startValuesSEXP, SEXP mSEXP, SEXP optionsSEXP, SEXP optionsFileSEXP) {
+NumericVector knitroCpp(List fcts, NumericVector startValues, int m, int nnzJ, NumericVector RjacIndexCons, NumericVector RjacIndexVars, List options, CharacterVector optionsFile);
+RcppExport SEXP knitroR_knitroCpp(SEXP fctsSEXP, SEXP startValuesSEXP, SEXP mSEXP, SEXP nnzJSEXP, SEXP RjacIndexConsSEXP, SEXP RjacIndexVarsSEXP, SEXP optionsSEXP, SEXP optionsFileSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
@@ -15,9 +15,12 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< List >::type fcts(fctsSEXP );
         Rcpp::traits::input_parameter< NumericVector >::type startValues(startValuesSEXP );
         Rcpp::traits::input_parameter< int >::type m(mSEXP );
+        Rcpp::traits::input_parameter< int >::type nnzJ(nnzJSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type RjacIndexCons(RjacIndexConsSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type RjacIndexVars(RjacIndexVarsSEXP );
         Rcpp::traits::input_parameter< List >::type options(optionsSEXP );
         Rcpp::traits::input_parameter< CharacterVector >::type optionsFile(optionsFileSEXP );
-        NumericVector __result = knitroCpp(fcts, startValues, m, options, optionsFile);
+        NumericVector __result = knitroCpp(fcts, startValues, m, nnzJ, RjacIndexCons, RjacIndexVars, options, optionsFile);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);
