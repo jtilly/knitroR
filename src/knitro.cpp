@@ -31,13 +31,13 @@ int  callback (const int evalRequestCode,
         
         if( evalRequestCode == KTR_RC_EVALFC) {
             Function rObjFun = listFcts["objFun"];
-	        NumericVector fval(1);
+            NumericVector fval(1);
             fval = rObjFun(xVector);		
     		*obj = fval(0);
             
          if(m>0) {
         
-            Function rConstraint = listFcts["c"];
+            Function rConstraint = listFcts["ceq"];
             NumericVector constraint(m);            
             constraint = rConstraint(xVector);
                             
@@ -83,7 +83,7 @@ int  callback (const int evalRequestCode,
 
 
 // [[Rcpp::export]]
-NumericVector knitroCon(List fcts, NumericVector startValues, int m, CharacterVector optionsFile) {
+NumericVector knitroCpp(List fcts, NumericVector startValues, int m, List options, CharacterVector optionsFile) {
     
         // let's make a pointer to a list
         List * fctsPointer = &fcts;
@@ -149,7 +149,7 @@ NumericVector knitroCon(List fcts, NumericVector startValues, int m, CharacterVe
 
         /* set options via textfile*/
         nStatus = KTR_load_param_file (kc, optionsFile[0]);
-
+        
         /* register the callback function */
         if (KTR_set_func_callback (kc, &callback) != 0)
                 exit( -1 );
@@ -196,9 +196,4 @@ NumericVector knitroCon(List fcts, NumericVector startValues, int m, CharacterVe
         free (lambda);
 
         return( finalEstimates );
-}
-
-// [[Rcpp::export]]
-NumericVector knitroUnc(List fcts, NumericVector startValues, CharacterVector optionsFile) {
-    return knitroCon(fcts, startValues, 0, optionsFile);
 }
