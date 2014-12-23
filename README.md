@@ -3,7 +3,7 @@ knitroR
 
 This package allows you to call the [Knitro](http://www.ziena.com/knitro.htm) optimizer from R. This is very much work in progress.
 
-Knitro offers a very straightforward integration for C++ (and many other languages). Check out the example code (https://www.artelys.com/tools/knitro_doc/2_userGuide/gettingStarted/startCallableLibrary.html)[here]. knitroR uses this C++ integration as backend and provides a wrapper via (http://dirk.eddelbuettel.com/code/rcpp.html)[Rcpp] that can be called from R. This is how it works: 
+Knitro offers a very straightforward integration for C++ (and many other languages). Check out the example code [here](https://www.artelys.com/tools/knitro_doc/2_userGuide/gettingStarted/startCallableLibrary.html). knitroR uses this C++ integration as backend and provides a wrapper via [Rcpp](http://dirk.eddelbuettel.com/code/rcpp.html) that can be called from R. This is how it works: 
 1. I define the objective function in R. 
 2. Using Rcpp, I then pass the R objective function on to the C++ code
 
@@ -17,13 +17,13 @@ The R-list ```fcts``` contains all the user-defined R functions
 3.  ```ceq``` (optional)
 4.  ```jac``` (optional)
 
-The function knitroCpp is very similar to the example code (https://www.artelys.com/tools/knitro_doc/2_userGuide/gettingStarted/startCallableLibrary.html)[here], with the one addition that a pointer to the functions list is passed on to Knitro's callback function via the parameter ```UserParams``` [see the Knitro documentation](https://www.artelys.com/tools/knitro_doc/2_userGuide/callbacks.html?highlight=userparams).
+The function knitroCpp is very similar to the example code [here](https://www.artelys.com/tools/knitro_doc/2_userGuide/gettingStarted/startCallableLibrary.html), with the one addition that a pointer to the functions list is passed on to Knitro's callback function via the parameter ```UserParams``` [see the Knitro documentation](https://www.artelys.com/tools/knitro_doc/2_userGuide/callbacks.html?highlight=userparams).
 
 3. Whenever knitro needs to evaluate the objective function, it [calls the R function](http://gallery.rcpp.org/articles/r-function-from-c++/). 
 
 
-Installation
-==============
+##Installation
+
 To install the package under Linux or Mac OS X you need to set a few environmental variables:
 
 ```
@@ -35,8 +35,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KNITRO/lib
 ```
 
 
-Usage
-==============
+##Usage
 
 Define the objective function in R
 
@@ -49,4 +48,7 @@ Other functions such as the gradient (```objGrad```), equality constraints (```c
 ```
 x1 = knitro(objFun=objFun, x0=x0, optionsFile="options.opt")
 ```
+
+##Acknowledgement
+Romain Francois has a [Knitro package](https://github.com/romainfrancois/KNITRO/) that helped me a lot to better understand how to get knitro to work in R. His package allows you to register an R function as knitro's callback. His package is probably superior to mine along every imaginable dimension. So go check it out!
 
