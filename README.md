@@ -7,7 +7,7 @@ Knitro offers a very straightforward integration for C++ (and many other languag
 
 1.  I define the objective function in R. 
 
-2.  Using Rcpp, I then pass the R objective function on to the C++ code
+2.  Using Rcpp, I then pass the R objective function on to the C++ code via
 
 ```
 knitroCpp(fcts, x0, m, nnzJ, jacIndexCons, jacIndexVars, options, optionsFile)
