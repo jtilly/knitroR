@@ -51,6 +51,6 @@ Other functions such as the gradient (```objGrad```), equality constraints (```c
 x1 = knitro(objFun=objFun, x0=x0, optionsFile="options.opt")
 ```
 
-##Acknowledgement
+##Acknowledgment
 Romain Francois has a [Knitro package](https://github.com/romainfrancois/KNITRO/) that helped me a lot to better understand how to get Knitro to work in R. His package allows you to register an R function as knitro's callback. His package is probably superior to mine along every imaginable dimension. So go check it out!
 
