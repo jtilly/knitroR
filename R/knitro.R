@@ -1,4 +1,32 @@
-knitro = function( objFun=NULL, objGrad=NULL, ceq=NULL, jac=NULL, jacIndexCons=NULL, jacIndexVars=NULL, x0=NA, options=NULL, optionsFile="" ) {
+knitro = function( objFun=NULL, objGrad=NULL, ceq=NULL, jac=NULL, jacIndexCons=NULL, jacIndexVars=NULL, x0=NA, options=NULL, optionsFile="options.opt" ) {
+    
+    
+    if(!file.exists(optionsFile)) {
+        sink(optionsFile)
+        cat("# KNITRO 9.1.0 Options file
+algorithm   0
+maxit       1000
+outlev      iter
+derivcheck   1
+derivcheck_tol 1e-06
+derivcheck_type central
+feastol     1e-06
+opttol      1e-06
+xtol        1e-06
+infeastol   1e-06
+gradopt     exact
+hessopt     bfgs
+honorbnds   0
+linsolver   4
+bar_directinterval  100000
+bar_maxbacktrack  10
+bar_maxcrossit   0
+bar_maxrefactor  5")
+        sink()      
+        
+        warning("No options file found. Created default options file \"options.opt\"")
+    }
+    
     
     if(!exists("objFun", mode = "function")) {
         stop("Need to provide objective function!")
