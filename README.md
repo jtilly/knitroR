@@ -36,6 +36,7 @@ export KNITRO=/path/to/your/knitro/installation
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KNITRO/lib
 ```
 
+For any of this to work, I need to open R (or RStudio) through the command line. 
 
 ##Usage
 
