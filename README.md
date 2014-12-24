@@ -9,19 +9,19 @@ Knitro offers a very straightforward integration for C++ (and many other languag
 
 2.  Using Rcpp, I then pass the R objective function on to the C++ code via
 
-```
-knitroCpp(fcts, x0, m, nnzJ, jacIndexCons, jacIndexVars, options, optionsFile)
-```
+    ```
+    knitroCpp(fcts, x0, m, nnzJ, jacIndexCons, jacIndexVars, options, optionsFile)
+    ```
 
-The R-list ```fcts``` contains all the user-defined R functions
-*  ```objFun```
-*  ```objGrad``` (optional)
-*  ```ceq``` (optional)
-*  ```jac``` (optional)
+    The R-list ```fcts``` contains all the user-defined R functions
+    *  ```objFun```
+    *  ```objGrad``` (optional)
+    *  ```ceq``` (optional)
+    *  ```jac``` (optional)
 
-The content of the function knitroCpp is almost identical to the function main() in the example code [here](https://www.artelys.com/tools/knitro_doc/2_userGuide/gettingStarted/startCallableLibrary.html), with the one addition that a pointer to the list ```fcts``` is passed on to Knitro's callback function via the parameter ```UserParams``` [see the Knitro documentation](https://www.artelys.com/tools/knitro_doc/2_userGuide/callbacks.html?highlight=userparams) for how this works.
+    The content of the function knitroCpp is almost identical to the function main() in the example code [here](https://www.artelys.com/tools/knitro_doc/2_userGuide/gettingStarted/startCallableLibrary.html), with the one addition that a pointer to the list ```fcts``` is passed on to Knitro's callback function via the parameter ```UserParams``` [see the Knitro documentation](https://www.artelys.com/tools/knitro_doc/2_userGuide/callbacks.html?highlight=userparams) for how this works.
 
-3. Whenever Knitro needs to evaluate the objective function, it [calls the R function](http://gallery.rcpp.org/articles/r-function-from-c++/). 
+3.  Whenever Knitro needs to evaluate the objective function, it [calls the R function](http://gallery.rcpp.org/articles/r-function-from-c++/). 
 
 
 ##Installation
