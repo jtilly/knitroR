@@ -4,19 +4,18 @@ knitro = function( objFun=NULL, objGrad=NULL, ceq=NULL, jac=NULL, jacIndexCons=N
     if(!file.exists(optionsFile)) {
         sink(optionsFile)
         cat("# KNITRO 9.1.0 Options file
-algorithm   0
+algorithm   1
 maxit       1000
 outlev      iter
-derivcheck   1
+derivcheck  1
 derivcheck_tol 1e-06
 derivcheck_type central
 feastol     1e-06
 opttol      1e-06
-xtol        1e-06
-infeastol   1e-06
-gradopt     exact
-hessopt     bfgs
-honorbnds   0
+xtol        1e-15
+gradopt     1
+hessopt     2
+honorbnds   1
 linsolver   4
 bar_directinterval  100000
 bar_maxbacktrack  10
