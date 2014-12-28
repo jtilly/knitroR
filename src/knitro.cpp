@@ -122,7 +122,7 @@ NumericVector knitroCpp(List fcts, NumericVector startValues, int m, int nnzJ, N
 
         /* bounds and constraints type */
         for (i = 0; i < n; i++) {
-                xLoBnds[i] = -KTR_INFBOUND;
+                xLoBnds[i] = 0;
                 xUpBnds[i] = KTR_INFBOUND;
         }
         for (j = 0; j < m; j++) {

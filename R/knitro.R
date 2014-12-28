@@ -1,3 +1,23 @@
+#' Call the knitro C++ interface
+#' 
+#' This function passes user defined R functions on to the C++ interface
+#'
+#' @param objFun is a scalar valued R function that returns the objective function
+#' @param objGrad is a vector-valued R function with the gradient
+#' @param c is a vector-valued R function with inequality constraints
+#' @param ceq is a vector-valued R function with equality constraints
+#' @param jac is a vector with the content of the Jacobian (sparse)
+#' @param jacIndexCons refers to each element of jac and contains the number 
+#' of the constraint it refers to. Indexing is C++ compatabile, i.e. the first 
+#' constraint has index 0
+#' @param jacIndexCons refers to each element of jac and contains the number 
+#' of the variable it refers to. Indexing is C++ compatabile, i.e. the first 
+#' variable has index 0
+#' @param x0 is a vector with starting values
+#' @param optionsFile is the path and filename of the options file. 
+#' If it does not exist, the function will create it
+#' @return a vector with the final estimates
+#' 
 knitro = function( objFun=NULL, objGrad=NULL, ceq=NULL, jac=NULL, jacIndexCons=NULL, jacIndexVars=NULL, x0=NA, options=NULL, optionsFile="options.opt" ) {
     
     
