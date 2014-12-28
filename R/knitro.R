@@ -4,8 +4,8 @@
 #'
 #' @param objFun is a scalar valued R function that returns the objective function
 #' @param objGrad is a vector-valued R function with the gradient
-#' @param c is a vector-valued R function with inequality constraints
-#' @param ceq is a vector-valued R function with equality constraints
+#' @param c_inequality is a vector-valued R function with inequality constraints
+#' @param c_equality is a vector-valued R function with equality constraints
 #' @param jac is a vector with the content of the Jacobian (sparse)
 #' @param jacIndexCons refers to each element of jac and contains the number 
 #' of the constraint it refers to. Indexing is C++ compatabile, i.e. the first 
@@ -18,7 +18,17 @@
 #' If it does not exist, the function will create it
 #' @return a vector with the final estimates
 #' 
-knitro = function( objFun=NULL, objGrad=NULL, ceq=NULL, jac=NULL, jacIndexCons=NULL, jacIndexVars=NULL, x0=NA, options=NULL, optionsFile="options.opt" ) {
+knitro = function( objFun = NULL, 
+                   objGrad = NULL, 
+                   c_equality = NULL, 
+                   c_inequality = NULL, 
+                   jac = NULL, 
+                   jacIndexCons = NULL, 
+                   jacIndexVars = NULL, 
+                   x0 = NA, 
+                   lb = NULL,
+                   ub = NULL,
+                   optionsFile = "options.opt" ) {
     
     
     if(!file.exists(optionsFile)) {
@@ -61,8 +71,9 @@ bar_maxrefactor  5")
     )
     
     fcts = list("objFun" = objFun);
-    m = 0;
-    nnzJ = 0;
+    num_inequality_constraints = 0
+    num_equality_constraints = 0
+    num_nonzeros_in_jacobian = 0
     if(is.null(jacIndexCons)) {
         jacIndexCons = vector(mode="numeric", length=1);
     }
@@ -70,25 +81,61 @@ bar_maxrefactor  5")
         jacIndexVars = vector(mode="numeric", length=1);
     }
     
-    if(exists("objGrad", mode = "function")) {
-        fcts = c( fcts, "objGrad" = objGrad)
+    if(!is.null(objGrad) && exists("objGrad", mode = "function")) {
+        
+        if(length(objGrad(x0))!=length(x0)) {
+            error("objGrad has wrong length")
+        }
+        
+        fcts = c( fcts, list("objGrad" = objGrad))
     }
-    if(exists("ceq", mode = "function")) {
-        fcts = c( fcts, "ceq" = ceq)
+    if(!is.null(c_equality) && exists("c_equality", mode = "function")) {
+        fcts = c( fcts, list("c" = c_equality))
         # find number of constraints
-        m = length(ceq(x0))
+        num_equality_constraints = length(c_equality(x0))
     }
-    if(m>0 && exists("jac", mode = "function")) {
-        fcts = c( fcts, "jac" = jac)
-        
+    if(!is.null(c_inequality) && exists("c_inequality", mode = "function")) {
+        if("c" %in% names(fcts)) {
+            fcts$c = function(x) c( c_equality(x), c_inequality(x) );
+        } else {
+            fcts = c( fcts, list("c" = c_inequality))
+        }
+        # find number of constraints
+        num_inequality_constraints = length(c_inequality(x0))
+    }
+    if((num_inequality_constraints + num_equality_constraints)>0 
+       && !is.null(jac) && exists("jac", mode = "function")) {
+        fcts = c( fcts, list("jac" = jac))
         # how many non-zeros do we have in the jacobian?
-        nnzJ = length(fcts$jac(x0));
+        num_nonzeros_in_jacobian = length(fcts$jac(x0));
         
     }
-    
-    options = list("gradopt"="KTR_GRADOPT_FORWARD");
-    
-    x1 = knitroCpp(fcts, x0, m, nnzJ, jacIndexCons, jacIndexVars, options, optionsFile)
+    if( !is.null(ub) ) {
+        if(length(ub) != length(x0)) {
+            error("ub")
+        }
+    } else {
+        ub = rep(1e10, length(x0))
+    }
+    if( !is.null(lb) ) {
+        if(length(lb) != length(x0)) {
+            error("lb")
+        }
+    } else {
+        lb = rep(-1e10, length(x0))
+    }
+        
+    # call knitro cpp interface
+    x1 = knitroCpp(fcts          = fcts, 
+                   startValues   = x0, 
+                   num_equality_constraints = num_equality_constraints, 
+                   num_inequality_constraints = num_inequality_constraints, 
+                   nnzJ          = num_nonzeros_in_jacobian, 
+                   RjacIndexCons = jacIndexCons, 
+                   RjacIndexVars = jacIndexVars, 
+                   lb            = lb,
+                   ub            = ub, 
+                   optionsFile   = optionsFile)
 
     return(x1)
     

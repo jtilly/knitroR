@@ -3,9 +3,8 @@
 
 using namespace Rcpp;
 
-
-/* callback function that evaluates the objective
-   and constraints */
+// Callback function that evaluates the objective function, the 
+// constraints, and the gradients
 int  callback (const int evalRequestCode,
     const int n,
     const int m,
@@ -37,7 +36,7 @@ int  callback (const int evalRequestCode,
             
          if(m>0) {
         
-            Function rConstraint = listFcts["ceq"];
+            Function rConstraint = listFcts["c"];
             NumericVector constraint(m);            
             constraint = rConstraint(xVector);
                             
@@ -77,31 +76,57 @@ int  callback (const int evalRequestCode,
             
 } 
 
-
-// inputs:
-// objective function , objectiveGradient, constraints, constraint jacobian
-
-
+//' Knitro C++ Wrapper
+//' 
+//' This function is the standard C++ wrapper around knitro. It defines the object 
+//' \code{KTR_new} and defines a callback function that is used to evaluate the objective
+//' function, the constraints, and gradients. The only deviation from the standard C++
+//' wrapper is to use \code{UserParam} to pass the original R functions on to the C++
+//' callback function. 
+//' 
+//' @param fcts is an R list of functions that includes the \code{objFun}, \code{objGrad}, \code{c}, and \code{jac}.
+//' @param startValues is a vector of start values
+//' @param num_equality_constraints is an integer with the number of equality constraints in \code{c}
+//' @param num_equality_constraints is an integer with the number of inequality constraints in \code{c}
+//' @param nnzJ is an integer with the number of non-zero objects in the Jacobian
+//' @param RjacIndexCons is a vector of length \code{nnzJ}. Each element contains the index of a 
+//' particular constraint (i.e. the index of a row in the jacobian).
+//' @param RjacIndexVars is a vector of length \code{nnzJ}. Each element contains the index of a 
+//' particular variable (i.e. the index of a column in the jacobian).
+//' @param ub a vector of upper bounds for each element in x0
+//' @param lb a vector lower bounds for each element in x0
+//' @param optionsFile the location of the options file 
+//' @return the vector that minimizes the objective function
+//' @seealso http://www.artelys.com/tools/knitro_doc/2_userGuide/gettingStarted/startCallableLibrary.html
 // [[Rcpp::export]]
-NumericVector knitroCpp(List fcts, NumericVector startValues, int m, int nnzJ, NumericVector RjacIndexCons, NumericVector RjacIndexVars, List options, CharacterVector optionsFile) {
-    
-        
+NumericVector knitroCpp(    List fcts, 
+                            NumericVector startValues, 
+                            int num_equality_constraints,
+                            int num_inequality_constraints,
+                            int nnzJ, 
+                            NumericVector RjacIndexCons, 
+                            NumericVector RjacIndexVars, 
+                            NumericVector ub,
+                            NumericVector lb,
+                            CharacterVector optionsFile) {
+                                    
+        int m = num_equality_constraints+num_inequality_constraints;
     
         // let's make a pointer to a list
         List * fctsPointer = &fcts;
         
+        // knitro variables
         int  nStatus;    
-
-        /* variables that are passed to KNITRO */
         KTR_context *kc;
         int n, nnzH, objGoal, objType;
         int *cType;
         int *jacIndexVars, *jacIndexCons;
         double obj, *x, *lambda;
         double *xLoBnds, *xUpBnds, *xInitial, *cLoBnds, *cUpBnds;
-        int i, j, k; // convenience variables
+        // convenience variables
+        int i, j, k; 
 
-        /*problem size and mem allocation */
+        // problem size and mem allocation
         n = startValues.length();
         nnzH = 0;
         x = (double *) malloc (n * sizeof(double));
@@ -116,29 +141,32 @@ NumericVector knitroCpp(List fcts, NumericVector startValues, int m, int nnzJ, N
         jacIndexVars = (int    *) malloc (nnzJ * sizeof(int));
         jacIndexCons = (int    *) malloc (nnzJ * sizeof(int));
 
-        /* objective type */
+        // objective type
         objType = KTR_OBJTYPE_GENERAL;
         objGoal = KTR_OBJGOAL_MINIMIZE;
 
-        /* bounds and constraints type */
+        // bounds and constraints type
         for (i = 0; i < n; i++) {
-                xLoBnds[i] = 0;
-                xUpBnds[i] = KTR_INFBOUND;
+                xLoBnds[i] = lb[i];
+                xUpBnds[i] = ub[i];
         }
-        for (j = 0; j < m; j++) {
+        for (j = 0; j < num_equality_constraints; j++) {
                 cType[j] = KTR_CONTYPE_GENERAL;
                 cLoBnds[j] = 0.0;
                 cUpBnds[j] = 0.0;
         }
+        for (j = num_equality_constraints; j < m; j++) {
+                cType[j] = KTR_CONTYPE_GENERAL;
+                cLoBnds[j] = -KTR_INFBOUND;
+                cUpBnds[j] = 0.0;
+        }
 
-        /* initial point */
+        // initial point 
         for (i = 0; i < n; i++)
                 xInitial[i] = startValues[i];
 
-        /* sparsity pattern (here, of a full matrix) */
+        // sparsity pattern
         if(m>0 && nnzJ>0) {
-
-            //std::cout << Jacobian.nrow() << " " << Jacobian.ncol() << "\n";
             for (k = 0; k < nnzJ; k++) {
                 jacIndexCons[k] = RjacIndexCons[k];
                 jacIndexVars[k] = RjacIndexVars[k];
@@ -197,6 +225,5 @@ NumericVector knitroCpp(List fcts, NumericVector startValues, int m, int nnzJ, N
         free (x);
         free (lambda);
 
-        
         return( finalEstimates );
 }
