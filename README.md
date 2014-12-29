@@ -1,7 +1,7 @@
 knitroR
 =======
 
-This package allows you to call the [Knitro](http://www.ziena.com/knitro.htm) optimizer from R. This is very much work in progress. All of this only works on Linux and Mac OS.
+This package allows you to call the [Knitro](http://www.ziena.com/knitro.htm) optimizer from R. This is very much work in progress. All of this only works on Linux and Mac OS. There is some rudimentary documentation [here](https://jtilly.github.io/knitroR/knitroR.pdf). Installation instructions are below.
 
 Knitro offers a very straightforward integration for C++ (and many other languages). Check out the example code [here](https://www.artelys.com/tools/knitro_doc/2_userGuide/gettingStarted/startCallableLibrary.html). knitroR uses this C++ integration as backend and provides a wrapper via [Rcpp](http://dirk.eddelbuettel.com/code/rcpp.html) that can be called from R. This is how it works: 
 
