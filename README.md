@@ -1,1 +1,4 @@
-knitoR documentation
+knitroR
+=======
+
+R interface for Knitro via Rcpp
