@@ -96,10 +96,10 @@ int  callback (const int evalRequestCode,
 //' @param ub a vector of upper bounds for each element in x0
 //' @param lb a vector lower bounds for each element in x0
 //' @param optionsFile the location of the options file 
-//' @return the vector that minimizes the objective function
+//' @return A list with the vector that minimizes the objective function, the final function value, and Knitro's exit status
 //' @seealso http://www.artelys.com/tools/knitro_doc/2_userGuide/gettingStarted/startCallableLibrary.html
 // [[Rcpp::export]]
-NumericVector knitroCpp(    List fcts, 
+List knitroCpp(    List fcts, 
                             NumericVector startValues, 
                             int num_equality_constraints,
                             int num_inequality_constraints,
@@ -225,5 +225,8 @@ NumericVector knitroCpp(    List fcts,
         free (x);
         free (lambda);
 
-        return( finalEstimates );
+        return List::create(_["x"]       = finalEstimates,
+                            _["fval"]    = obj,
+                            _["status"]  = nStatus
+                       );
 }

@@ -6,7 +6,7 @@
 using namespace Rcpp;
 
 // knitroCpp
-NumericVector knitroCpp(List fcts, NumericVector startValues, int num_equality_constraints, int num_inequality_constraints, int nnzJ, NumericVector RjacIndexCons, NumericVector RjacIndexVars, NumericVector ub, NumericVector lb, CharacterVector optionsFile);
+List knitroCpp(List fcts, NumericVector startValues, int num_equality_constraints, int num_inequality_constraints, int nnzJ, NumericVector RjacIndexCons, NumericVector RjacIndexVars, NumericVector ub, NumericVector lb, CharacterVector optionsFile);
 RcppExport SEXP knitroR_knitroCpp(SEXP fctsSEXP, SEXP startValuesSEXP, SEXP num_equality_constraintsSEXP, SEXP num_inequality_constraintsSEXP, SEXP nnzJSEXP, SEXP RjacIndexConsSEXP, SEXP RjacIndexVarsSEXP, SEXP ubSEXP, SEXP lbSEXP, SEXP optionsFileSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
@@ -22,7 +22,7 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< NumericVector >::type ub(ubSEXP );
         Rcpp::traits::input_parameter< NumericVector >::type lb(lbSEXP );
         Rcpp::traits::input_parameter< CharacterVector >::type optionsFile(optionsFileSEXP );
-        NumericVector __result = knitroCpp(fcts, startValues, num_equality_constraints, num_inequality_constraints, nnzJ, RjacIndexCons, RjacIndexVars, ub, lb, optionsFile);
+        List __result = knitroCpp(fcts, startValues, num_equality_constraints, num_inequality_constraints, nnzJ, RjacIndexCons, RjacIndexVars, ub, lb, optionsFile);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);

@@ -21,7 +21,7 @@
 #' @param ub a vector of upper bounds for each element in x0
 #' @param lb a vector lower bounds for each element in x0
 #' @param optionsFile the location of the options file 
-#' @return the vector that minimizes the objective function
+#' @return A list with the vector that minimizes the objective function, the final function value, and Knitro's exit status
 #' @seealso http://www.artelys.com/tools/knitro_doc/2_userGuide/gettingStarted/startCallableLibrary.html
 knitroCpp <- function(fcts, startValues, num_equality_constraints, num_inequality_constraints, nnzJ, RjacIndexCons, RjacIndexVars, ub, lb, optionsFile) {
     .Call('knitroR_knitroCpp', PACKAGE = 'knitroR', fcts, startValues, num_equality_constraints, num_inequality_constraints, nnzJ, RjacIndexCons, RjacIndexVars, ub, lb, optionsFile)

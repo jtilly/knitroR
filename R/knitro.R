@@ -16,7 +16,7 @@
 #' @param x0 is a vector with starting values
 #' @param optionsFile is the path and filename of the options file. 
 #' If it does not exist, the function will create it
-#' @return a vector with the final estimates
+#' @return a list with the final estimates, the function value, and Knitro's exit status
 #' 
 knitro = function( objFun = NULL, 
                    objGrad = NULL, 
@@ -126,7 +126,7 @@ bar_maxrefactor  5")
     }
         
     # call knitro cpp interface
-    x1 = knitroCpp(fcts          = fcts, 
+    results = knitroCpp(fcts          = fcts, 
                    startValues   = x0, 
                    num_equality_constraints = num_equality_constraints, 
                    num_inequality_constraints = num_inequality_constraints, 
@@ -137,6 +137,6 @@ bar_maxrefactor  5")
                    ub            = ub, 
                    optionsFile   = optionsFile)
 
-    return(x1)
+    return(results)
     
 }
