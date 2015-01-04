@@ -113,7 +113,6 @@ mpec.constraint.Step2 = function(x, Pi=NULL) {
     return(equalityConstraint)
 }
 
-
 mpec.constraintGradient.Step2 = function(x, idx=FALSE, Pi=NULL) {
     if(!is.null(Pi)) {
         Param$Pi = Pi
@@ -154,10 +153,6 @@ generateMPECStartValues = function(x0=NULL) {
 }
 
 truth = c(Param$k, Param$phi[1], Param$omega, as.vector(t(ret$vS[-6,])))
-mpec.likelihood.Step2(mpec.Startvalues.Step2)
-max(abs(mpec.constraint.Step2(mpec.Startvalues.Step2)))
-mpec.likelihood.Step2(truth)
-max(abs(mpec.constraint.Step2(truth)))
 
 mpec.inequalityConstraint.Step2 = function(x) {
     return( c( x[2]-x[1], x[3]-x[2], x[4]-x[3] ));
@@ -206,4 +201,3 @@ mpec.Estimates$x[1:7]
 mpec.Estimates$iter
 nfxp.Estimates$x 
 nfxp.Estimates$iter
-
