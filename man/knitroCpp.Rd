@@ -15,6 +15,8 @@ knitroCpp(fcts, startValues, num_equality_constraints,
 
 \item{num_equality_constraints}{is an integer with the number of equality constraints in \code{c}}
 
+\item{num_inequality_constraints}{is an integer with the number of inequality constraints in \code{c}}
+
 \item{nnzJ}{is an integer with the number of non-zero objects in the Jacobian}
 
 \item{RjacIndexCons}{is a vector of length \code{nnzJ}. Each element contains the index of a
@@ -28,11 +30,9 @@ particular variable (i.e. the index of a column in the jacobian).}
 \item{lb}{a vector lower bounds for each element in x0}
 
 \item{optionsFile}{the location of the options file}
-
-\item{num_equality_constraints}{is an integer with the number of inequality constraints in \code{c}}
 }
 \value{
-the vector that minimizes the objective function
+A list with the vector that minimizes the objective function, the final function value, and Knitro's exit status
 }
 \description{
 This function is the standard C++ wrapper around knitro. It defines the object

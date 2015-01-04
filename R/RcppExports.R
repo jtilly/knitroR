@@ -12,7 +12,7 @@
 #' @param fcts is an R list of functions that includes the \code{objFun}, \code{objGrad}, \code{c}, and \code{jac}.
 #' @param startValues is a vector of start values
 #' @param num_equality_constraints is an integer with the number of equality constraints in \code{c}
-#' @param num_equality_constraints is an integer with the number of inequality constraints in \code{c}
+#' @param num_inequality_constraints is an integer with the number of inequality constraints in \code{c}
 #' @param nnzJ is an integer with the number of non-zero objects in the Jacobian
 #' @param RjacIndexCons is a vector of length \code{nnzJ}. Each element contains the index of a 
 #' particular constraint (i.e. the index of a row in the jacobian).

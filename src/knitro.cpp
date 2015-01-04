@@ -61,7 +61,7 @@ int  callback (const int evalRequestCode,
                 NumericVector jacobian(nnzJ); 
                 jacobian = rJacobian(xVector);            
                     
-                for (int kX = 0; kX < nnzJ; kX++) {                        
+                for(int kX = 0; kX < nnzJ; kX++) {                        
                     jac[kX] = jacobian[kX];
                 }
             }
@@ -87,7 +87,7 @@ int  callback (const int evalRequestCode,
 //' @param fcts is an R list of functions that includes the \code{objFun}, \code{objGrad}, \code{c}, and \code{jac}.
 //' @param startValues is a vector of start values
 //' @param num_equality_constraints is an integer with the number of equality constraints in \code{c}
-//' @param num_equality_constraints is an integer with the number of inequality constraints in \code{c}
+//' @param num_inequality_constraints is an integer with the number of inequality constraints in \code{c}
 //' @param nnzJ is an integer with the number of non-zero objects in the Jacobian
 //' @param RjacIndexCons is a vector of length \code{nnzJ}. Each element contains the index of a 
 //' particular constraint (i.e. the index of a row in the jacobian).
@@ -123,8 +123,6 @@ List knitroCpp(    List fcts,
         int *jacIndexVars, *jacIndexCons;
         double obj, *x, *lambda;
         double *xLoBnds, *xUpBnds, *xInitial, *cLoBnds, *cUpBnds;
-        // convenience variables
-        int i, j, k; 
 
         // problem size and mem allocation
         n = startValues.length();
@@ -146,28 +144,28 @@ List knitroCpp(    List fcts,
         objGoal = KTR_OBJGOAL_MINIMIZE;
 
         // bounds and constraints type
-        for (i = 0; i < n; i++) {
+        for(int i = 0; i < n; i++) {
                 xLoBnds[i] = lb[i];
                 xUpBnds[i] = ub[i];
         }
-        for (j = 0; j < num_equality_constraints; j++) {
+        for(int j = 0; j < num_equality_constraints; j++) {
                 cType[j] = KTR_CONTYPE_GENERAL;
                 cLoBnds[j] = 0.0;
                 cUpBnds[j] = 0.0;
         }
-        for (j = num_equality_constraints; j < m; j++) {
+        for(int j = num_equality_constraints; j < m; j++) {
                 cType[j] = KTR_CONTYPE_GENERAL;
                 cLoBnds[j] = -KTR_INFBOUND;
                 cUpBnds[j] = 0.0;
         }
 
         // initial point 
-        for (i = 0; i < n; i++)
+        for(int i = 0; i < n; i++)
                 xInitial[i] = startValues[i];
 
         // sparsity pattern
         if(m>0 && nnzJ>0) {
-            for (k = 0; k < nnzJ; k++) {
+            for(int k = 0; k < nnzJ; k++) {
                 jacIndexCons[k] = RjacIndexCons[k];
                 jacIndexVars[k] = RjacIndexVars[k];
             }
@@ -208,11 +206,17 @@ List knitroCpp(    List fcts,
         nStatus = KTR_solve (kc, x, lambda, 0, &obj,
                 NULL, NULL, NULL, NULL, NULL, fctsPointer);
 
-        if (nStatus != 0)
+        if (nStatus != 0) {
                 printf ("\nKNITRO failed to solve the problem, final status = %d\n",
                         nStatus);
-        else
+        }
+        else {
                 printf ("\nKNITRO successful, objective is = %e\n", obj);
+        }
+
+        int numberOfIterations = KTR_get_number_iters(kc);
+        int numberOfObjFunEval = KTR_get_number_FC_evals(kc);
+        int numberOfGradEval = KTR_get_number_GA_evals(kc);
 
         // delete the KNITRO instance and primal/dual solution 
         KTR_free (&kc);
@@ -227,6 +231,9 @@ List knitroCpp(    List fcts,
 
         return List::create(_["x"]       = finalEstimates,
                             _["fval"]    = obj,
-                            _["status"]  = nStatus
+                            _["status"]  = nStatus,
+                            _["iter"]    = numberOfIterations,
+                            _["objEval"] = numberOfObjFunEval,
+                            _["gradEval"] = numberOfGradEval
                        );
 }

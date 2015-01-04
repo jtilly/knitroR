@@ -8,10 +8,10 @@
 #' @param c_equality is a vector-valued R function with equality constraints
 #' @param jac is a vector with the content of the Jacobian (sparse)
 #' @param jacIndexCons refers to each element of jac and contains the number 
-#' of the constraint it refers to. Indexing is C++ compatabile, i.e. the first 
+#' of the constraint it refers to. Indexing is C++ compatible, i.e. the first 
 #' constraint has index 0
 #' @param jacIndexCons refers to each element of jac and contains the number 
-#' of the variable it refers to. Indexing is C++ compatabile, i.e. the first 
+#' of the variable it refers to. Indexing is C++ compatible, i.e. the first 
 #' variable has index 0
 #' @param x0 is a vector with starting values
 #' @param optionsFile is the path and filename of the options file. 
@@ -84,7 +84,7 @@ bar_maxrefactor  5")
     if(!is.null(objGrad) && exists("objGrad", mode = "function")) {
         
         if(length(objGrad(x0))!=length(x0)) {
-            error("objGrad has wrong length")
+            stop("objGrad has wrong length")
         }
         
         fcts = c( fcts, list("objGrad" = objGrad))
@@ -112,14 +112,14 @@ bar_maxrefactor  5")
     }
     if( !is.null(ub) ) {
         if(length(ub) != length(x0)) {
-            error("ub")
+            stop("ub as wrong length")
         }
     } else {
         ub = rep(1e10, length(x0))
     }
     if( !is.null(lb) ) {
         if(length(lb) != length(x0)) {
-            error("lb")
+            stop("lb as wrong length")
         }
     } else {
         lb = rep(-1e10, length(x0))
@@ -139,4 +139,72 @@ bar_maxrefactor  5")
 
     return(results)
     
+}
+
+#' Call the knitro C++ interface using multiple start values
+#' 
+#' This function passes user defined R functions on to the C++ interface. In contrast
+#' to knitro() knitro uses a matrix of startvalues as input, where each row corresponds
+#' to one vector of start values that knitro will attempt to optimize the objective function.
+#' The function returns the solution for the set of start values that resulted in the lowest
+#' objective function.
+#'
+#' @param objFun is a scalar valued R function that returns the objective function
+#' @param objGrad is a vector-valued R function with the gradient
+#' @param c_inequality is a vector-valued R function with inequality constraints
+#' @param c_equality is a vector-valued R function with equality constraints
+#' @param jac is a vector with the content of the Jacobian (sparse)
+#' @param jacIndexCons refers to each element of jac and contains the number 
+#' of the constraint it refers to. Indexing is C++ compatible, i.e. the first 
+#' constraint has index 0
+#' @param jacIndexCons refers to each element of jac and contains the number 
+#' of the variable it refers to. Indexing is C++ compatible, i.e. the first 
+#' variable has index 0
+#' @param x0 is a matrix with starting values
+#' @param optionsFile is the path and filename of the options file. 
+#' If it does not exist, the function will create it
+#' @return a list with the final estimates, the function value, and Knitro's exit status
+#' 
+knitro_ms = function( objFun = NULL, 
+                   objGrad = NULL, 
+                   c_equality = NULL, 
+                   c_inequality = NULL, 
+                   jac = NULL, 
+                   jacIndexCons = NULL, 
+                   jacIndexVars = NULL, 
+                   x0 = NA, 
+                   lb = NULL,
+                   ub = NULL,
+                   optionsFile = "options.opt" ) {
+    
+    if(NROW(x0)==1 || NCOL(x0) ==1 ) {
+        x0 = matrix(x0, nrow=1, ncol=length(x0));
+    }
+    
+    countSuccesses = 0
+    
+    for( jX in 1:NROW(x0)) {
+        
+        # do the optimization at the current start values
+        current = knitro(objFun, objGrad, c_equality, c_inequality, jac, jacIndexCons,  jacIndexVars, x0[jX,], lb, ub, optionsFile)
+        
+        # count whther the knitro finished with a "good" exit flag
+        if(current$status == 0 || current$status==-100) {
+            countSuccesses = countSuccesses + 1
+        }
+        
+        # store the best optimization outcome
+        if(jX==1) {
+            best = current
+        }
+        else {
+            if(best$fval > current$fval && (current$status==0 || current$status==-100)) {
+                best = current
+            }
+        }
+    }
+    
+    best = c(best, list( converged = countSuccesses ))
+    
+    return(best)
 }

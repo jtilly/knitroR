@@ -124,24 +124,7 @@ mpec.constraintGradient.Step2 = function(x, idx=FALSE, Pi=NULL) {
     Param$omega = x[7];
     vS = matrix(0, nrow=Settings$nCheck+1, ncol=Settings$cCheck);
     vS[-(Settings$nCheck+1),] = t(matrix(x[seq(from=8,to=7+Settings$nCheck*Settings$cCheck)], ncol=Settings$nCheck, nrow=Settings$cCheck))
-    constraintGradientMatrix = mpecConstraintGradient( Settings, Param, Data, vS)
-    
-    # constraintGradientList returns a matrix with all non-zero gradients
-    # the format is as follows:
-    # constraint id | variable id | value
-    
-    # now, let's group all the phis (i.e. variable ids 5,...,9)
-    constraintGradientMatrix[(constraintGradientMatrix[, 2] == 5),3] =
-        constraintGradientMatrix[(constraintGradientMatrix[, 2] == 5),3] +
-        constraintGradientMatrix[(constraintGradientMatrix[, 2] == 6),3] +
-        constraintGradientMatrix[(constraintGradientMatrix[, 2] == 7),3] +
-        constraintGradientMatrix[(constraintGradientMatrix[, 2] == 8),3] +
-        constraintGradientMatrix[(constraintGradientMatrix[, 2] == 9),3] 
-    
-    # delete 6,7,8,9
-    constraintGradientMatrix = constraintGradientMatrix[(constraintGradientMatrix[, 2] < 6 | constraintGradientMatrix[, 2] > 9),]
-    # push index down for everything >9
-    constraintGradientMatrix[(constraintGradientMatrix[,2]>9),2] = constraintGradientMatrix[(constraintGradientMatrix[, 2]>9),2]-4
+    constraintGradientMatrix = mpecConstraintGradient( Settings, Param, Data, vS, CONSOLIDATE_PHIS=TRUE)
     
     if(idx==TRUE) {
         return(constraintGradientMatrix);
@@ -156,19 +139,18 @@ mpec.constraintGradient.Step2 = function(x, idx=FALSE, Pi=NULL) {
 # values for the auxiliary parameters such that the equilibrium constraint 
 # is satisfied; this is trying to find the best possible starting values for 
 # mpec
-generateMPECStartValues = function() {
-    structural.startvalues = matrix(runif(1, 0, 5), nrow=1, ncol=7)
+generateMPECStartValues = function(x0=NULL) {
+    if(is.null(x0)) {
+        structural.startvalues = matrix(runif(1, 0, 5), nrow=1, ncol=7)
+    } else {
+        structural.startvalues = matrix(x0, nrow=1, ncol=7)    
+    }
     ParamStartValues = Param
     ParamStartValues$k = structural.startvalues[1:5]
     ParamStartValues$phi = rep(structural.startvalues[6],5)
     ParamStartValues$omega = structural.startvalues[7]
     ret  = valuefunction(Settings, ParamStartValues)
     x = c(structural.startvalues, as.vector(t(ret$vS[-6,])))
-}
-
-mpec.Startvalues.Step2 = generateMPECStartValues()
-while(!is.finite( mpec.likelihood.Step2(mpec.Startvalues.Step2) )) {
-    mpec.Startvalues.Step2 = generateMPECStartValues()
 }
 
 truth = c(Param$k, Param$phi[1], Param$omega, as.vector(t(ret$vS[-6,])))
@@ -185,7 +167,18 @@ mpec.jacobian.Step2 = function(x) {
   return( c(mpec.constraintGradient.Step2(x), -1, 1, -1, 1, -1, 1 ))
 }
 
-mpec.Estimates = knitro(objFun = mpec.likelihood.Step2, 
+
+
+mpec.Startvalues.Step2 = matrix(nrow=10, ncol=Settings$nCheck*Settings$cCheck+Settings$nCheck+2)
+for(jX in (1:NROW(mpec.Startvalues.Step2))) {
+    mpec.Startvalues.Step2[jX,] = generateMPECStartValues()
+    while(!is.finite( mpec.likelihood.Step2(mpec.Startvalues.Step2[jX,]) )) {
+        mpec.Startvalues.Step2[jX,] = generateMPECStartValues()
+    }
+}
+
+tic()
+mpec.Estimates = knitro_ms(objFun = mpec.likelihood.Step2, 
                         objGrad = mpec.likelihoodGradient.Step2,
                         c_equality = mpec.constraint.Step2,
                         c_inequality = mpec.inequalityConstraint.Step2,
@@ -195,19 +188,22 @@ mpec.Estimates = knitro(objFun = mpec.likelihood.Step2,
                                          125, 125, 126, 126, 127, 127),
                         jacIndexVars = c(mpec.constraintGradient.Step2(mpec.Startvalues.Step2, idx=TRUE)[,2],
                                          0,1,1,2,2,3),
-                        lb = rep(0, length(mpec.Startvalues.Step2)), 
-                        ub = rep(1e20, length(mpec.Startvalues.Step2)), 
+                        lb = rep(0, Settings$nCheck*Settings$cCheck+Settings$nCheck+2), 
+                        ub = c( rep(10,Settings$nCheck), 20, 20 , rep(200, Settings$nCheck*Settings$cCheck)), 
                         optionsFile = "options.opt")
+mpecTimer = toc()
 
 # nfxp comparison
-nfxp.Estimates = knitro(x0 = mpec.Startvalues.Step2[1:7], 
+tic()
+nfxp.Estimates = knitro_ms(x0 = mpec.Startvalues.Step2[,1:7], 
                         objFun = function(x) nfxp.likelihood.Step2(x, Data, Settings, Param),
                         objGrad = function(x) nfxp.gradient.Step2(x, Data, Settings, Param),
                         optionsFile="options.opt")
+nfxpTimer = toc()
 
-print("mpec estimates")
-print(mpec.Estimates[1:7])
-mpec.Estimates[1:7]
-print("nfxp estimates")
-print(nfxp.Estimates[1:7])
-nfxp.Estimates[1:7]
+
+mpec.Estimates$x[1:7]
+mpec.Estimates$iter
+nfxp.Estimates$x 
+nfxp.Estimates$iter
+
