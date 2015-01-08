@@ -4,10 +4,9 @@
 \alias{knitro}
 \title{Call the knitro C++ interface}
 \usage{
-knitro(objFun = NULL, objGrad = NULL, c_equality = NULL,
-  c_inequality = NULL, jac = NULL, jacIndexCons = NULL,
-  jacIndexVars = NULL, x0 = NA, lb = NULL, ub = NULL,
-  optionsFile = "options.opt")
+knitro(objFun, objGrad = NULL, c_equality = NULL, c_inequality = NULL,
+  jac = NULL, jacIndexCons = NULL, jacIndexVars = NULL, x0 = NA,
+  lb = NULL, ub = NULL, optionsFile = "options.opt")
 }
 \arguments{
 \item{objFun}{is a scalar valued R function that returns the objective function}
@@ -24,14 +23,14 @@ knitro(objFun = NULL, objGrad = NULL, c_equality = NULL,
 of the constraint it refers to. Indexing is C++ compatible, i.e. the first
 constraint has index 0}
 
+\item{jacIndexVars}{refers to each element of jac and contains the number
+of the variable it refers to. Indexing is C++ compatible, i.e. the first
+variable has index 0}
+
 \item{x0}{is a vector with starting values}
 
 \item{optionsFile}{is the path and filename of the options file.
 If it does not exist, the function will create it}
-
-\item{jacIndexCons}{refers to each element of jac and contains the number
-of the variable it refers to. Indexing is C++ compatible, i.e. the first
-variable has index 0}
 }
 \value{
 a list with the final estimates, the function value, and Knitro's exit status

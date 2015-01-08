@@ -18,7 +18,7 @@
 #' If it does not exist, the function will create it
 #' @return a list with the final estimates, the function value, and Knitro's exit status
 #' 
-knitro = function( objFun = NULL, 
+knitro = function( objFun, 
                    objGrad = NULL, 
                    c_equality = NULL, 
                    c_inequality = NULL, 
@@ -174,11 +174,11 @@ knitro = function( objFun = NULL,
 
 #' Call the knitro C++ interface using multiple start values
 #' 
-#' This function passes user defined R functions on to the C++ interface. In contrast
-#' to knitro() knitro uses a matrix of startvalues as input, where each row corresponds
-#' to one vector of start values that knitro will attempt to optimize the objective function.
-#' The function returns the solution for the set of start values that resulted in the lowest
-#' objective function.
+#' This is a multi start version of knitro(). Uses a matrix as startvalues where
+#' each row corresponds to one set of startvalues to be used. This version of 
+#' multi-start gives the user more control over the start values than Knitro's
+#' built-in version of multi-start. If you want to use the built-in version of
+#' multi-start instead, you can do so via the options file.
 #'
 #' @param objFun is a scalar valued R function that returns the objective function
 #' @param objGrad is a vector-valued R function with the gradient
@@ -196,7 +196,7 @@ knitro = function( objFun = NULL,
 #' If it does not exist, the function will create it
 #' @return a list with the final estimates, the function value, and Knitro's exit status
 #' 
-knitro_ms = function( objFun = NULL, 
+knitro_ms = function( objFun, 
                       objGrad = NULL, 
                       c_equality = NULL, 
                       c_inequality = NULL, 

@@ -4,10 +4,9 @@
 \alias{knitro_ms}
 \title{Call the knitro C++ interface using multiple start values}
 \usage{
-knitro_ms(objFun = NULL, objGrad = NULL, c_equality = NULL,
-  c_inequality = NULL, jac = NULL, jacIndexCons = NULL,
-  jacIndexVars = NULL, x0 = NA, lb = NULL, ub = NULL,
-  optionsFile = "options.opt")
+knitro_ms(objFun, objGrad = NULL, c_equality = NULL, c_inequality = NULL,
+  jac = NULL, jacIndexCons = NULL, jacIndexVars = NULL, x0 = NA,
+  lb = NULL, ub = NULL, optionsFile = "options.opt")
 }
 \arguments{
 \item{objFun}{is a scalar valued R function that returns the objective function}
@@ -37,10 +36,10 @@ variable has index 0}
 a list with the final estimates, the function value, and Knitro's exit status
 }
 \description{
-This function passes user defined R functions on to the C++ interface. In contrast
-to knitro() knitro uses a matrix of startvalues as input, where each row corresponds
-to one vector of start values that knitro will attempt to optimize the objective function.
-The function returns the solution for the set of start values that resulted in the lowest
-objective function.
+This is a multi start version of knitro(). Uses a matrix as startvalues where
+each row corresponds to one set of startvalues to be used. This version of
+multi-start gives the user more control over the start values than Knitro's
+built-in version of multi-start. If you want to use the built-in version of
+multi-start instead, you can do so via the options file.
 }
 
