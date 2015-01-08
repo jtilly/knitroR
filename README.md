@@ -24,7 +24,13 @@ export KNITRO=/path/to/your/knitro/installation
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KNITRO/lib
 ```
 
-For any of this to work, I need to open R (or RStudio) through the command line. 
+For any of this to work, I need to open R (or RStudio) through the command line. Then, install the package using the `devtools` package:
+
+```
+install.packages("devtools")
+library("devtools")
+install_github("jtilly/knitroR")
+```
 
 ##Usage
 
