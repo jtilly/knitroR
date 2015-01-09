@@ -33,23 +33,16 @@ knitro = function( objFun,
     if(!file.exists(optionsFile)) {
         sink(optionsFile)
         cat("# KNITRO 9.1.0 Options file
-            algorithm   1
-            maxit       1000
-            outlev      iter
-            derivcheck  1
-            derivcheck_tol 1e-06
-            derivcheck_type central
-            feastol     1e-06
-            opttol      1e-06
-            xtol        1e-15
-            gradopt     1
-            hessopt     2
-            honorbnds   0
-            linsolver   4
-            bar_directinterval  100000
-            bar_maxbacktrack  10
-            bar_maxcrossit   0
-            bar_maxrefactor  5")
+algorithm   1
+maxit       1000
+outlev      iter
+feastol     1e-06
+opttol      1e-06
+xtol        1e-15
+gradopt     forward
+hessopt     2
+honorbnds   0
+")
         sink()      
         
         warning("No options file found. Created default options file \"options.opt\"")
@@ -127,9 +120,9 @@ knitro = function( objFun,
             # check if the jacobian is dense
             if(length(fcts$jac(x0)) == (num_inequality_constraints + num_equality_constraints)*length(x0)) {
                 jac = c( jac )
-                jacIndexCons = rep( (1:(num_inequality_constraints + num_equality_constraints)), length(x0) )
+                jacIndexCons = rep( (1:(num_inequality_constraints + num_equality_constraints)), length(x0) )-1
                 jacIndexVars = kronecker(1:length(x0), 
-                                         seq(from=1, to=1, length.out = (num_inequality_constraints + num_equality_constraints)))
+                                         seq(from=1, to=1, length.out = (num_inequality_constraints + num_equality_constraints)))-1
             } else {
                 stop("jac is not dense, but no sparsity pattern was provided")
             }
@@ -137,23 +130,31 @@ knitro = function( objFun,
         
     }
     if(num_nonzeros_in_jacobian==0) {
-        jacIndexVars = vector(mode="numeric", length=1)
-        jacIndexCons = vector(mode="numeric", length=1)
+        if((num_inequality_constraints + num_equality_constraints)>0) {
+            num_nonzeros_in_jacobian = (num_inequality_constraints + num_equality_constraints) * length(x0)
+            jacIndexCons = rep( (1:(num_inequality_constraints + num_equality_constraints)), length(x0) )-1
+            jacIndexVars = kronecker(1:length(x0), 
+                                     seq(from=1, to=1, length.out = (num_inequality_constraints + num_equality_constraints)))-1
+        } else {
+            jacIndexVars = vector(mode="numeric", length=1)
+            jacIndexCons = vector(mode="numeric", length=1)
+        }
     }
+    
     
     if( !is.null(ub) ) {
         if(length(ub) != length(x0)) {
             stop("ub has wrong length")
         }
     } else {
-        ub = rep(1e10, length(x0))
+        ub = rep(1e20, length(x0))
     }
     if( !is.null(lb) ) {
         if(length(lb) != length(x0)) {
             stop("lb has wrong length")
         }
     } else {
-        lb = rep(-1e10, length(x0))
+        lb = rep(-1e20, length(x0))
     }
     
     # call knitro cpp interface
