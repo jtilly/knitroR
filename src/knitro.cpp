@@ -174,16 +174,51 @@ List knitroCpp(    List fcts,
         // create a KNITRO instance 
         kc = KTR_new();
         if (kc == NULL)
-                exit( -1 ); // probably a license issue
+                return( -1 ); // probably a license issue
 
         // set options via textfile
         nStatus = KTR_load_param_file (kc, optionsFile[0]);
         
+        // check if the gradient options make sense
+        int gradopt;
+        KTR_get_int_param_by_name(kc, "gradopt", &gradopt);
+        
+        if(gradopt!=2 && gradopt!=3) {
+            // if gradient option is exact, but there's no objGrad, 
+            // then change derivatives to forward
+            if(!fcts.containsElementNamed("objGrad")) {
+                KTR_set_int_param_by_name(kc, "gradopt", KTR_GRADOPT_FORWARD);    
+                std::cout << "WARNING: gradopt was set to exact, but no objGrad function could be found. \n";
+                std::cout << "         Using forward finite differences instead. \n";
+            }
+            if(m>0) {
+                // if gradient option is exact, but there's no jac, 
+                // then change derivatives to forward
+                if(!fcts.containsElementNamed("jac")) {
+                    KTR_set_int_param_by_name(kc, "gradopt", KTR_GRADOPT_FORWARD);
+                    std::cout << "WARNING: gradopt was set to exact, but no jac function could be found. \n";
+                    std::cout << "         Using forward finite differences instead. \n";
+                }
+            }
+        }
+        
+        // check if hessopt makes sense
+        int hessopt;        
+        KTR_get_int_param_by_name(kc, "hessopt", &hessopt);
+        if(hessopt <= 1 || hessopt>6) {
+            std::cout << "ERROR: knitroR cannot deal with user defined Hessians at this point.\n";
+            return(-1);
+        }
+        if(hessopt == 5) {
+            std::cout << "ERROR: knitroR cannot deal with Hessian-vector products at this point.\n";
+            return(-1);
+        }
+        
         // register the callback function 
         if (KTR_set_func_callback (kc, &callback) != 0)
-                exit( -1 );
+                return( -1 );
         if (KTR_set_grad_callback (kc, &callback) != 0)
-                exit( -1 );
+                return( -1 );
 
         // pass the problem definition to KNITRO 
         nStatus = KTR_init_problem (kc, n, objGoal, objType,
