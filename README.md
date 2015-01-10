@@ -23,7 +23,7 @@ Also, you need to make sure that $KNITRO/lib is in your library path, i.e. under
 ```
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KNITRO/lib
 ```
-and under MAC OS, you need to set
+and under Mac OS, you need to set
 ```
 export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$KNITRO/lib
 ```
