@@ -39,7 +39,7 @@ install_github("jtilly/knitroR")
 ```
 ### Windows
 
-I'm assuming that Knitro has been successfully installed and that all environmental variables were set appropriately. In particular, `KNITRODIR` must point to the Knitro installation.
+I'm assuming that Knitro was installed successfully and that all environmental variables were set appropriately. In particular, `KNITRODIR` must point to the Knitro installation.
 
 To install this package under Windows you need to download and install [Rtools](http://cran.r-project.org/bin/windows/Rtools/). 
 
