@@ -1,7 +1,7 @@
 knitroR
 =======
 
-This package allows you to call the [Knitro](http://www.ziena.com/knitro.htm) optimizer from R. This is very much work in progress. All of this only works on Linux and Mac OS. There is some rudimentary documentation [here](https://jtilly.github.io/knitroR/knitroR.pdf). Installation instructions are below.
+This package allows you to call the [Knitro](http://www.ziena.com/knitro.htm) optimizer from R. This is very much work in progress. The package works under Linux, Mac OS X and Windows. There is some rudimentary documentation [here](https://jtilly.github.io/knitroR/knitroR.pdf). Installation instructions are below.
 
 Knitro offers a very straightforward integration for C++ (and many other languages). Check out the example code [here](https://www.artelys.com/tools/knitro_doc/2_userGuide/gettingStarted/startCallableLibrary.html). knitroR uses this C++ integration as backend and provides a wrapper via [Rcpp](http://dirk.eddelbuettel.com/code/rcpp.html) that can be called from R. This is how it works: 
 
@@ -14,6 +14,7 @@ Knitro offers a very straightforward integration for C++ (and many other languag
 
 ##Installation
 
+### Linux and Mac OS X
 To install the package under Linux or Mac OS X you need to create the environmental variable KNITRO:
 
 ```
@@ -34,6 +35,24 @@ install.packages("devtools")
 library("devtools")
 install_github("jtilly/knitroR")
 ```
+### Windows
+To install this package under Windows you need to download and install [Rtools](http://cran.r-project.org/bin/windows/Rtools/). 
+
+If you're using Knitro 9.1, then you can download and install knitroR using the devtools:
+```
+install.packages("devtools")
+library("devtools")
+install_github("jtilly/knitroR")
+```
+
+If you're using an older version than Knitro 9.1, you need to
+- Download knitroR to your computer by hand, either by cloning this repository or by downloading it form [here](https://github.com/jtilly/knitroR/archive/master.zip). 
+- Go to `src\Makevars.win` and change `KNRELEASE` to the appropriate version
+- Then open `R' and install this package by hand: 
+```
+install.packages("C:\Downloads\knitroR-master", repos = NULL, type="source")
+```
+where you need to change the path to knitroR appropropriately. 
 
 ##Usage
 
@@ -47,6 +66,12 @@ Other functions such as the gradient (```objGrad```), equality constraints (```c
 
 ```
 x1 = knitro(objFun=objFun, x0=x0)
+```
+
+You can check if everything works by running
+```
+library(knitroR)
+demo(example)
 ```
 
 ##Acknowledgment
