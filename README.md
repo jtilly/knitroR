@@ -56,19 +56,7 @@ where you need to change the path to `knitroR` appropriately.
 
 ##Usage
 
-Define the objective function in R
-
-```
-objFun = function(x) { -x[1]^2+x[2]-x[2]*x[3] }
-```
-
-Other functions such as the gradient (```objGrad```), equality constraints (```ceq```), and the constraint Jacobian (```jac```) can be defined similarly. These additional functions are optional. Then, call the Knitro function to do the optimization
-
-```
-x1 = knitro(objFun=objFun, x0=x0)
-```
-
-You can check if everything works by running
+You can check if the package works by running
 ```
 library(knitroR)
 demo(example)
