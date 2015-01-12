@@ -1,0 +1,11 @@
+# define knitro version
+KNRELEASE = 910
+
+# define path to knitro's library file
+KNLIB_DYNAMIC = "$(KNITRODIR)\lib\knitro$(KNRELEASE).lib"
+
+# link to knitro's library file
+PKG_LIBS = $(shell "$(R_HOME)/bin$(R_ARCH_BIN)/Rscript.exe" -e "Rcpp:::LdFlags()") $(KNLIB_DYNAMIC) 
+
+# include knitro.h
+PKG_CXXFLAGS = -I"$(KNITRODIR)/include"
