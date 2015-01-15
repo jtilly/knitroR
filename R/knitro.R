@@ -189,10 +189,12 @@ honorbnds   0
 #' @param jacIndexCons refers to each element of jac and contains the number 
 #' of the constraint it refers to. Indexing is C++ compatible, i.e. the first 
 #' constraint has index 0
-#' @param jacIndexCons refers to each element of jac and contains the number 
+#' @param jacIndexVars refers to each element of jac and contains the number 
 #' of the variable it refers to. Indexing is C++ compatible, i.e. the first 
 #' variable has index 0
 #' @param x0 is a matrix with starting values
+#' @param lb is a vector of lower bounds
+#' @param ub is a vector of upper bounds
 #' @param optionsFile is the path and filename of the options file. 
 #' If it does not exist, the function will create it
 #' @return a list with the final estimates, the function value, and Knitro's exit status
