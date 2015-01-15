@@ -67,22 +67,7 @@ library(knitroR)
 demo(example)
 ```
 
-The file [demo/example.R](https://github.com/jtilly/knitroR/blob/master/demo/example.R) illustrates how `knitroR` can be used:
-
-```
-library(knitroR)
-objFun = function(x) { 
-    return( (x-3)^2 ) 
-}
-c_equality = function(x) {
-    return(sin(x)+1)
-}
-c_inequality = function(x) {
-    return(x-1)
-}
-
-knitro(objFun=objFun, c_equality = c_equality, c_inequality = c_inequality, x0=0, options="options.opt")
-```
+The files [demo/example1.R](https://github.com/jtilly/knitroR/blob/master/demo/example1.R) and [demo/example2.R](https://github.com/jtilly/knitroR/blob/master/demo/example2.R) illustrates how `knitroR` can be used.
 
 Note that all options are defined in the text file `options.opt`. If this file doesn't exist, it will be created.
 
