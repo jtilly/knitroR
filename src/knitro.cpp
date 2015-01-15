@@ -188,16 +188,16 @@ List knitroCpp(    List fcts,
             // then change derivatives to forward
             if(!fcts.containsElementNamed("objGrad")) {
                 KTR_set_int_param_by_name(kc, "gradopt", KTR_GRADOPT_FORWARD);    
-                std::cout << "WARNING: gradopt was set to exact, but no objGrad function could be found. \n";
-                std::cout << "         Using forward finite differences instead. \n";
+                Rcpp::Rcout << "WARNING: gradopt was set to exact, but no objGrad function could be found. \n";
+                Rcpp::Rcout << "         Using forward finite differences instead. \n";
             }
             if(m>0) {
                 // if gradient option is exact, but there's no jac, 
                 // then change derivatives to forward
                 if(!fcts.containsElementNamed("jac")) {
                     KTR_set_int_param_by_name(kc, "gradopt", KTR_GRADOPT_FORWARD);
-                    std::cout << "WARNING: gradopt was set to exact, but no jac function could be found. \n";
-                    std::cout << "         Using forward finite differences instead. \n";
+                    Rcpp::Rcout << "WARNING: gradopt was set to exact, but no jac function could be found. \n";
+                    Rcpp::Rcout << "         Using forward finite differences instead. \n";
                 }
             }
         }
@@ -207,24 +207,24 @@ List knitroCpp(    List fcts,
         KTR_get_int_param_by_name(kc, "derivcheck", &derivcheck);
         if(derivcheck==1 && !fcts.containsElementNamed("objGrad")) {
             KTR_set_int_param_by_name(kc, "derivcheck", 0);
-            std::cout << "WARNING: derivcheck was set to 1, but no gradient was provided. \n";
-            std::cout << "         Skipping derivatives check. \n";
+            Rcpp::Rcout << "WARNING: derivcheck was set to 1, but no gradient was provided. \n";
+            Rcpp::Rcout << "         Skipping derivatives check. \n";
         }
         if(derivcheck==1 && m>0 && !fcts.containsElementNamed("jac")) {
             KTR_set_int_param_by_name(kc, "derivcheck", 0);
-            std::cout << "WARNING: derivcheck was set to 1, but no jacobian was provided. \n";
-            std::cout << "         Skipping derivatives check. \n";
+            Rcpp::Rcout << "WARNING: derivcheck was set to 1, but no jacobian was provided. \n";
+            Rcpp::Rcout << "         Skipping derivatives check. \n";
         }
         
         // check if hessopt makes sense
         int hessopt;        
         KTR_get_int_param_by_name(kc, "hessopt", &hessopt);
         if(hessopt <= 1 || hessopt>6) {
-            std::cout << "ERROR: knitroR cannot deal with user defined Hessians at this point.\n";
+            Rcpp::Rcout << "ERROR: knitroR cannot deal with user defined Hessians at this point.\n";
             return(-1);
         }
         if(hessopt == 5) {
-            std::cout << "ERROR: knitroR cannot deal with Hessian-vector products at this point.\n";
+            Rcpp::Rcout << "ERROR: knitroR cannot deal with Hessian-vector products at this point.\n";
             return(-1);
         }
         

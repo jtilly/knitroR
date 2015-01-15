@@ -29,6 +29,10 @@ variable has index 0}
 
 \item{x0}{is a vector with starting values}
 
+\item{lb}{is a vector of lower bounds}
+
+\item{ub}{is a vector of upper bounds}
+
 \item{optionsFile}{is the path and filename of the options file.
 If it does not exist, the function will create it}
 }

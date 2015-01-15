@@ -23,14 +23,18 @@ knitro_ms(objFun, objGrad = NULL, c_equality = NULL, c_inequality = NULL,
 of the constraint it refers to. Indexing is C++ compatible, i.e. the first
 constraint has index 0}
 
+\item{jacIndexVars}{refers to each element of jac and contains the number
+of the variable it refers to. Indexing is C++ compatible, i.e. the first
+variable has index 0}
+
 \item{x0}{is a matrix with starting values}
+
+\item{lb}{is a vector of lower bounds}
+
+\item{ub}{is a vector of upper bounds}
 
 \item{optionsFile}{is the path and filename of the options file.
 If it does not exist, the function will create it}
-
-\item{jacIndexCons}{refers to each element of jac and contains the number
-of the variable it refers to. Indexing is C++ compatible, i.e. the first
-variable has index 0}
 }
 \value{
 a list with the final estimates, the function value, and Knitro's exit status
