@@ -53,7 +53,7 @@ install_github("jtilly/knitroR")
 If you're using an older version than Knitro 9.1, you need to
 - Download `knitroR` by hand, either by cloning this repository or by downloading it from [here](https://github.com/jtilly/knitroR/archive/master.zip). 
 - Then go to `src\Makevars.win` in this package's source code and change the variable `KNRELEASE` to the appropriate version
-- Then open `R' and install this package by hand: 
+- Then open `R` and install this package by hand: 
 ```
 install.packages("C:\Downloads\knitroR-master", repos = NULL, type="source")
 ```
