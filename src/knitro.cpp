@@ -202,6 +202,20 @@ List knitroCpp(    List fcts,
             }
         }
         
+        // only perform gradient check if a gradient was provided
+        int derivcheck;
+        KTR_get_int_param_by_name(kc, "derivcheck", &derivcheck);
+        if(derivcheck==1 && !fcts.containsElementNamed("objGrad")) {
+            KTR_set_int_param_by_name(kc, "derivcheck", 0);
+            std::cout << "WARNING: derivcheck was set to 1, but no gradient was provided. \n";
+            std::cout << "         Skipping derivatives check. \n";
+        }
+        if(derivcheck==1 && m>0 && !fcts.containsElementNamed("jac")) {
+            KTR_set_int_param_by_name(kc, "derivcheck", 0);
+            std::cout << "WARNING: derivcheck was set to 1, but no jacobian was provided. \n";
+            std::cout << "         Skipping derivatives check. \n";
+        }
+        
         // check if hessopt makes sense
         int hessopt;        
         KTR_get_int_param_by_name(kc, "hessopt", &hessopt);
