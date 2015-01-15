@@ -1,9 +1,9 @@
 knitroR
 =======
 
-This package allows you to call the [Knitro](http://www.ziena.com/knitro.htm) optimizer from R. This is very much work in progress. My goal for this package is to create an R integration of Knitro that is as simple to use as R's `optim()`.
+This package allows you to call the [Knitro](http://www.ziena.com/knitro.htm) optimizer from R. This is very much work in progress. My goal for this package is to create an `R` integration of Knitro that is as simple to use `optim()`.
 
-So far I have managed to get this package to work under Linux, Mac OS, and Windows. Installation instructions are below. 
+At this point, this package only brings some of the functionality from Knitro to R. I have managed to get this package to work under Linux, Mac OS, and Windows. Installation instructions are below. 
 
 Knitro offers a very straightforward integration for C++ (and many other languages). Check out the example code [here](https://www.artelys.com/tools/knitro_doc/2_userGuide/gettingStarted/startCallableLibrary.html). `knitroR` uses this C++ integration as backend and provides a wrapper using [Rcpp](http://dirk.eddelbuettel.com/code/rcpp.html) that can be called from R. This is how it works: 
 
@@ -52,7 +52,7 @@ install_github("jtilly/knitroR")
 
 If you're using an older version than Knitro 9.1, you need to
 - Download `knitroR` by hand, either by cloning this repository or by downloading it from [here](https://github.com/jtilly/knitroR/archive/master.zip). 
-- Then go to `src\Makevars.win` in this package's source code and change the variable `KNRELEASE` to the appropriate version
+- Then go to `src\Makevars.win` in this package's source code and change the variable `KNRELEASE` to the appropriate version. `KNRELEASE` needs to be set so that it matches the name of the file `knitro$(KNRELEASE).lib` in your Knitro `lib` directory. 
 - Then open `R` and install this package by hand: 
 ```
 install.packages("C:\Downloads\knitroR-master", repos = NULL, type="source")
