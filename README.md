@@ -64,10 +64,11 @@ where you need to change the path to `knitroR` appropriately.
 You can check if the package works by running
 ```
 library(knitroR)
-demo(example)
+demo(example1)
+demo(example2)
 ```
 
-The files [demo/example1.R](https://github.com/jtilly/knitroR/blob/master/demo/example1.R) and [demo/example2.R](https://github.com/jtilly/knitroR/blob/master/demo/example2.R) illustrates how `knitroR` can be used.
+The files [demo/example1.R](https://github.com/jtilly/knitroR/blob/master/demo/example1.R) and [demo/example2.R](https://github.com/jtilly/knitroR/blob/master/demo/example2.R) illustrate how `knitroR` can be used.
 
 Note that all options are defined in the text file `options.opt`. If this file doesn't exist, it will be created.
 
