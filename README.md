@@ -16,7 +16,7 @@ Knitro offers a very straightforward integration for C++ (and many other languag
 
 ##Installation
 
-IMPORTANT: Make sure you're installing `knitroR` on the proper architecture. If you have the 32bit version of knitro, you should use a 32bit version of `R` and only try to build a 32bit package (i.e. turn off multiarch support using the option `--no-multiarch`). Similarly, if you have 64 bit version of knitro, you should use a 64 bit version of `R` and only try to build a 64 bit package. 
+IMPORTANT: Make sure you're installing `knitroR` on the proper architecture. If you have the 32bit version of Knitro, you should use a 32bit version of `R` and only try to build a 32bit package (i.e. turn off multiarch support using the option `--no-multiarch`). Similarly, if you have 64bit version of Knitro, you should use a 64bit version of `R` and only try to build a 64bit package. 
 
 ### Linux and Mac OS X
 To install the package under Linux or Mac OS X you need to create the environmental variable `KNITRO`:
