@@ -1,4 +1,4 @@
-knitroR
+knitroR: R Package for Knitro
 =======
 
 This package allows you to call the [Knitro](http://www.ziena.com/knitro.htm) optimizer from R. This is very much work in progress. My goal for this package is to create an `R` integration of Knitro that is as simple to use `optim()`.
