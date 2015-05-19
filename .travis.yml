@@ -1,8 +1,11 @@
 # .travis.yml
 #
-# See README.md for instructions, or for more configuration options,
-# see the wiki:
-#   https://github.com/craigcitro/r-travis/wiki
+# I'm installing a mock knitro library to check if the package compiles. 
+# Since knitro is a commercial product, I don't think it's a good idea for
+# me to install their actual library on travis. The mock library contains 
+# the same functions as the real knitro library, yet it just returns 
+# meaningless nonsense. Unfortunately that means that I have turn off unit
+# tests on travis by setting the environmental variable KNITRO_MOCK=1.
 
 language: c
 branches:
