@@ -1,9 +1,7 @@
-knitroR
+knitroR: R Package for Knitro
 =======
 
-This package allows you to call the [Knitro](http://www.ziena.com/knitro.htm) optimizer from R. This is very much work in progress. My goal for this package is to create an `R` integration of Knitro that is as simple to use `optim()`.
-
-At this point, this package only brings some of the functionality from Knitro to R. I have managed to get this package to work under Linux, Mac OS, and Windows 7. I have had some complaints from Windows users, so this package may or may not work for you. The package works with Knitro 8.1.1 and more recent versions. Installation instructions are below. 
+This package allows you to call the [Knitro](http://www.ziena.com/knitro.htm) optimizer from R. This is very much work in progress. At this point, this package only brings some of the functionality from Knitro to R. I have managed to get this package to work under Linux, Mac OS, and Windows 7. I have had some complaints from Windows users, so this package may or may not work for you. The package works with Knitro 8.1.1 and more recent versions. Installation instructions are below. 
 
 Knitro offers a very straightforward integration for C++ (and many other languages). Check out the example code [here](https://www.artelys.com/tools/knitro_doc/2_userGuide/gettingStarted/startCallableLibrary.html). `knitroR` uses this C++ integration as backend and provides a wrapper using [Rcpp](http://dirk.eddelbuettel.com/code/rcpp.html) that can be called from R. 
 
@@ -65,9 +63,9 @@ demo(example2)
 
 The files [demo/example1.R](https://github.com/jtilly/knitroR/blob/master/demo/example1.R) and [demo/example2.R](https://github.com/jtilly/knitroR/blob/master/demo/example2.R) illustrate how `knitroR` can be used.
 
-Note that all options are defined in the text file `options.opt`. If this file doesn't exist, it will be created.
+Note that all options are defined in the text file `options.opt`. If this file doesn't exist, it will be created. 
 
-There is some rudimentary documentation [here](https://jtilly.github.io/knitroR/knitroR.pdf)
+The reference manual is [here](https://jtilly.github.io/knitroR/knitroR.pdf "Documentation for knitroR")
 
 ##Acknowledgment
 Romain Francois has a [Knitro package](https://github.com/romainfrancois/KNITRO/) that helped me to better understand how to get Knitro to work in `R`. His package allows you to register an R function as Knitro's callback.
