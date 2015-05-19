@@ -13,20 +13,20 @@ IMPORTANT: Make sure you're installing `knitroR` on the proper architecture. If 
 
 ### Linux and Mac OS X
 To install the package under Linux or Mac OS X you need to create the environmental variable `KNITRO`:
-```
+```{bash}
 export KNITRO=/path/to/your/knitro/installation
 ```
 Also, you need to make sure that $KNITRO/lib is in your library path, i.e. under Linux, you need to set
-```
+```{bash}
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KNITRO/lib
 ```
 and under Mac OS, you need to set
-```
+```{bash}
 export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$KNITRO/lib
 ```
 For any of this to work, I need to open R (or RStudio) through the command line. Then, install the package using the `devtools` package:
 
-```
+```{r}
 install.packages("devtools")
 library("devtools")
 install_github("jtilly/knitroR")
@@ -39,7 +39,7 @@ I'm assuming that Knitro was installed successfully and that all environmental v
 To install this package under Windows you need to download and install [Rtools](http://cran.r-project.org/bin/windows/Rtools/). 
 
 If you're using Knitro 9.1, then you can download and install `knitroR` using the devtools:
-```
+```{r}
 install.packages("devtools")
 library("devtools")
 install_github("jtilly/knitroR")
@@ -49,7 +49,7 @@ If you're using an older version than Knitro 9.1, you need to
 - Download `knitroR` by hand, either by cloning this repository or by downloading it from [here](https://github.com/jtilly/knitroR/archive/master.zip). 
 - Then go to `src\Makevars.win` in this package's source code and change the variable `KNRELEASE` to the appropriate version. `KNRELEASE` needs to be set so that it matches the name of the file `knitro$(KNRELEASE).lib` in your Knitro `lib` directory. 
 - Then open `R` and install this package by hand: 
-```
+```{r}
 install.packages("C:\Downloads\knitroR-master", repos = NULL, type="source", INSTALL_opts="--no-multiarch")
 ```
 where you need to change the path to `knitroR` appropriately. 
@@ -57,7 +57,7 @@ where you need to change the path to `knitroR` appropriately.
 ##Usage
 
 You can check if the package works by running
-```
+```{r}
 library(knitroR)
 demo(example1)
 demo(example2)
