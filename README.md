@@ -48,11 +48,10 @@ I'm assuming that KNITRO was installed successfully and that all environmental v
 
 To install this package under Windows you need to download and install [Rtools](http://cran.r-project.org/bin/windows/Rtools/). 
 
-If you're using KNITRO 9.1, then you can download and install `knitroR` using the devtools:
+If you're using KNITRO 9.1, then you can download and install `knitroR` right away:
 ```{r}
 install.packages("devtools")
-library("devtools")
-install_github("jtilly/knitroR")
+devtools::install_github("jtilly/knitroR")
 ```
 
 If you're using an older version than KNITRO 9.1, you need to
