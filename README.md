@@ -69,7 +69,5 @@ Note that all options are defined in the text file `options.opt`. If this file d
 
 There is some rudimentary documentation [here](https://jtilly.github.io/knitroR/knitroR.pdf)
 
-
 ##Acknowledgment
 Romain Francois has a [Knitro package](https://github.com/romainfrancois/KNITRO/) that helped me to better understand how to get Knitro to work in `R`. His package allows you to register an R function as Knitro's callback.
-
