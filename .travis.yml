@@ -15,7 +15,7 @@ before_install:
   - ./travis-tool.sh bootstrap
   - curl -OL http://raw.github.com/jtilly/knitro-mock-library/master/install-knitro-mock.sh
   - chmod 755 ./install-knitro-mock.sh
-  - ./install_knitro-mock.sh
+  - ./install-knitro-mock.sh
   - export KNITRO=~/knitro-mock-library
   - export LD_LIBRARY_PATH=~/knitro-mock-library/lib
 install:
