@@ -10,27 +10,36 @@ KNITRO offers a very straightforward integration for `C++`. Examples are availab
 
 Make sure you're installing `knitroR` on the proper architecture. If you have the 32bit version of KNITRO, you should use a 32bit version of `R` and only try to build a 32bit package (i.e. turn off multiarch support using the option `--no-multiarch`). Similarly, if you have the 64bit version of KNITRO, you should use a 64bit version of `R` and only try to build a 64bit package. 
 
-#### Linux and Mac OS X
-To install the package under Linux or Mac OS X you need to create the environmental variable `KNITRO`:
-```{bash}
-export KNITRO=/path/to/your/knitro/installation
-```
-The environmental variable `ZIENA_LICENSE` needs to point to your KNITRO license file:
-```{bash}
-export ZIENA_LICENSE=/path/to/knitro/ziena_license.txt
-```
-You need to make sure that `$KNITRO/lib` is in your library path, i.e. under Linux:
-```{bash}
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KNITRO/lib
-```
-And under Mac OS X:
-```{bash}
-export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$KNITRO/lib
-```
-For any of this to work, I need to open `R` (or `RStudio`) through the command line. Then, install `knitroR` using the `devtools` package:
+#### Linux 
+To install the package under Linux you first need to set the environmental variables `KNITRO`, `ZIENA_LICENSE`, and `LD_LIBRARY_PATH`. This can be done directly in `R` (or `RStudio`). In the following, please adjust the paths and file names where appropriate:
 ```{r}
+Sys.setenv(KNITRO = "/path/to/knitro")
+Sys.setenv(ZIENA_LICENSE = "/path/to/knitro/ziena_license.txt")
+Sys.setenv(LD_LIBRARY_PATH = sprintf("%s:%s/lib", Sys.getenv("LD_LIBRARY_PATH"), Sys.getenv("KNITRO")))
 install.packages("devtools")
 devtools::install_github("jtilly/knitroR")
+```
+Alternatively, you can define these environmental variables using the command line:
+```{bash}
+export KNITRO=/path/to/knitro
+export ZIENA_LICENSE=/path/to/knitro/ziena_license.txt
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path/to/knitro/lib
+```
+
+#### Mac OS X
+Same as under Linux with the only exception that `LD_LIBRARY_PATH` is called `DYLD_LIBRARY_PATH`: This can be done directly in `R` (or `RStudio`). In the following, please adjust the paths and file names where appropriate:
+```{r}
+Sys.setenv(KNITRO = "/path/to/knitro")
+Sys.setenv(ZIENA_LICENSE = "/path/to/knitro/ziena_license.txt")
+Sys.setenv(DYLD_LIBRARY_PATH = sprintf("%s:%s/lib", Sys.getenv("DYLD_LIBRARY_PATH"), Sys.getenv("KNITRO")))
+install.packages("devtools")
+devtools::install_github("jtilly/knitroR")
+```
+Alternatively, you can define these environmental variables using the command line:
+```{bash}
+export KNITRO=/path/to/knitro
+export ZIENA_LICENSE=/path/to/knitro/ziena_license.txt
+export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/path/to/knitro/lib
 ```
 
 #### Windows
