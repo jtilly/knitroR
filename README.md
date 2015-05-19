@@ -15,22 +15,22 @@ To install the package under Linux or Mac OS X you need to create the environmen
 ```{bash}
 export KNITRO=/path/to/your/knitro/installation
 ```
-
-Also, you need to make sure that `$KNITRO/lib` is in your library path, i.e. under Linux, you need to set
-
+The environmental variable `ZIENA_LICENSE` needs to point to your KNITRO license file:
+```{bash}
+export ZIENA_LICENSE=/path/to/knitro/ziena_license.txt
+```
+You need to make sure that `$KNITRO/lib` is in your library path, i.e. under Linux:
 ```{bash}
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KNITRO/lib
 ```
-and under Mac OS, you need to set
+And under Mac OS X:
 ```{bash}
 export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$KNITRO/lib
 ```
-For any of this to work, I need to open `R` (or `RStudio`) through the command line. Then, install the package using the `devtools` package:
-
+For any of this to work, I need to open `R` (or `RStudio`) through the command line. Then, install `knitroR` using the `devtools` package:
 ```{r}
 install.packages("devtools")
-library("devtools")
-install_github("jtilly/knitroR")
+devtools::install_github("jtilly/knitroR")
 ```
 
 #### Windows
