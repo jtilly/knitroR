@@ -58,8 +58,8 @@ where you need to change the path to `knitroR` appropriately.
 You can check if the package works by running
 ```{r}
 library(knitroR)
-demo(example1)
-demo(example2)
+demo("example1")
+demo("example2")
 ```
 
 The files [demo/example1.R](https://github.com/jtilly/knitroR/blob/master/demo/example1.R) and [demo/example2.R](https://github.com/jtilly/knitroR/blob/master/demo/example2.R) illustrate how `knitroR` can be used.
