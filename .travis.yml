@@ -17,6 +17,7 @@ before_install:
   - chmod 755 ./install-knitro-mock.sh
   - ./install-knitro-mock.sh
   - export KNITRO=~/knitro-mock-library
+  - export KNITRO_MOCK=1
   - export LD_LIBRARY_PATH=~/knitro-mock-library/lib
 install:
   - mkdir ~/.R
