@@ -10,7 +10,7 @@ KNITRO offers a very straightforward integration for `C++`. Examples are availab
 
 Make sure you're installing `knitroR` on the proper architecture. If you have the 32bit version of KNITRO, you should use a 32bit version of `R` and only try to build a 32bit package (i.e. turn off multiarch support using the option `--no-multiarch`). Similarly, if you have the 64bit version of KNITRO, you should use a 64bit version of `R` and only try to build a 64bit package. 
 
-### Linux and Mac OS X
+#### Linux and Mac OS X
 To install the package under Linux or Mac OS X you need to create the environmental variable `KNITRO`:
 ```{bash}
 export KNITRO=/path/to/your/knitro/installation
@@ -33,7 +33,7 @@ library("devtools")
 install_github("jtilly/knitroR")
 ```
 
-### Windows
+#### Windows
 
 I'm assuming that KNITRO was installed successfully and that all environmental variables were set appropriately. In particular, `KNITRODIR` must point to the directory with the KNITRO installation.
 
@@ -55,9 +55,9 @@ install.packages("C:\Downloads\knitroR-master", repos = NULL, type="source", INS
 ```
 where you need to change the path to `knitroR` appropriately. 
 
-##Usage
+## Example
 
-Example with inequality constraint and lower bounds: 
+Consider the following example with inequality constraint and lower bounds. Taken from the Julia implementation of KNITRO [knitrojl](https://github.com/JuliaOpt/KNITRO.jl):
 
 ```{r}
 # load library
