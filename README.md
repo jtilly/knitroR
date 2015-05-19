@@ -65,9 +65,9 @@ demo(example2)
 
 The files [demo/example1.R](https://github.com/jtilly/knitroR/blob/master/demo/example1.R) and [demo/example2.R](https://github.com/jtilly/knitroR/blob/master/demo/example2.R) illustrate how `knitroR` can be used.
 
-Note that all options are defined in the text file `options.opt`. If this file doesn't exist, it will be created.
+Note that all options are defined in the text file `options.opt`. If this file doesn't exist, it will be created. 
 
-There is some rudimentary documentation [here](https://jtilly.github.io/knitroR/knitroR.pdf)
+The reference manual is [here](https://jtilly.github.io/knitroR/knitroR.pdf "Documentation for knitroR")
 
 ##Acknowledgment
 Romain Francois has a [Knitro package](https://github.com/romainfrancois/KNITRO/) that helped me to better understand how to get Knitro to work in `R`. His package allows you to register an R function as Knitro's callback.
