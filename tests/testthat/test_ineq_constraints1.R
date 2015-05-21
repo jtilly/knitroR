@@ -1,4 +1,4 @@
-test_that("Check if optimizer with inequality constraints works", {
+test_that("Check if optimizer with inequality constraints works (1/2)", {
     # define the objective function
     objFun = function(x) {
         9.0 - 8.0 * x[1] - 6.0 * x[2] - 4.0 * x[3] + 2.0 * x[1] ^ 2 + 2.0 * x[2] ^
