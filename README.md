@@ -96,6 +96,3 @@ The files [demo/example1.R](https://github.com/jtilly/knitroR/blob/master/demo/e
 
 ## Documentation
 The reference manual is [here](https://jtilly.github.io/knitroR/knitroR.pdf "Documentation for knitroR").
-
-##Acknowledgment
-Romain Francois has a [KNITRO package](https://github.com/romainfrancois/KNITRO/) that helped me to better understand how to get KNITRO to work in `R`. His package provides a deeper integration of KNITRO that allows you to register an `R` function as KNITRO's callback.
