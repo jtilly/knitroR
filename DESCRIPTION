@@ -7,9 +7,9 @@ Author: Jan Tilly
 Maintainer: Jan Tilly <jtilly@econ.upenn.edu>
 URL: https://github.com/jtilly/knitroR
 Description: Provides an R interface for the non-linear constraint optimizer 
-    Knitro. Knitro has an excellent C++ implementation. This package passes 
-    user-defined R functions on to the C++ interface. To use Knitro you need to 
-    have a valid license. 
+    KNITRO. This package passes user-defined R functions on to KNITRO's 
+	C++ interface. This package does not include KNITRO. To use this package
+	you need to install KNITRO and own a valid license.
 License: GPL (>= 2)
 Imports: Rcpp (>= 0.11.3)
 LinkingTo: Rcpp
