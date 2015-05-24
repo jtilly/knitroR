@@ -76,9 +76,9 @@ int  callback (const int evalRequestCode,
             
 } 
 
-//' Knitro C++ Wrapper
+//' KNITRO C++ Wrapper
 //' 
-//' This function is the standard C++ wrapper around knitro. It defines the object 
+//' This function is the standard C++ wrapper for KNITRO. It defines the object 
 //' \code{KTR_new} and defines a callback function that is used to evaluate the objective
 //' function, the constraints, and gradients. The only deviation from the standard C++
 //' wrapper is to use \code{UserParam} to pass the original R functions on to the C++
@@ -96,7 +96,7 @@ int  callback (const int evalRequestCode,
 //' @param ub a vector of upper bounds for each element in x0
 //' @param lb a vector lower bounds for each element in x0
 //' @param optionsFile the location of the options file 
-//' @return A list with the vector that minimizes the objective function, the final function value, and Knitro's exit status
+//' @return A list with the vector that minimizes the objective function, the final function value, and KNITRO's exit status
 //' @seealso http://www.artelys.com/tools/knitro_doc/2_userGuide/gettingStarted/startCallableLibrary.html
 // [[Rcpp::export]]
 List knitroCpp(    List fcts, 

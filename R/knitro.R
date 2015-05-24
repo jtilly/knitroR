@@ -1,4 +1,4 @@
-#' Call the knitro C++ interface
+#' Call the KNITRO C++ interface
 #' 
 #' This function passes user defined R functions on to the C++ interface
 #'
@@ -18,7 +18,7 @@
 #' @param ub is a vector of upper bounds
 #' @param optionsFile is the path and filename of the options file. 
 #' If it does not exist, the function will create it
-#' @return a list with the final estimates, the function value, and Knitro's exit status
+#' @return a list with the final estimates, the function value, and KNITRO's exit status
 #' 
 knitro = function( objFun, 
                    objGrad = NULL, 
@@ -175,11 +175,11 @@ honorbnds   0
     
 }
 
-#' Call the knitro C++ interface using multiple start values
+#' Call the KNITRO C++ interface using multiple start values
 #' 
 #' This is a multi start version of knitro(). Uses a matrix as startvalues where
 #' each row corresponds to one set of startvalues to be used. This version of 
-#' multi-start gives the user more control over the start values than Knitro's
+#' multi-start gives the user more control over the start values than KNITRO's
 #' built-in version of multi-start. If you want to use the built-in version of
 #' multi-start instead, you can do so via the options file.
 #'
@@ -199,7 +199,7 @@ honorbnds   0
 #' @param ub is a vector of upper bounds
 #' @param optionsFile is the path and filename of the options file. 
 #' If it does not exist, the function will create it
-#' @return a list with the final estimates, the function value, and Knitro's exit status
+#' @return a list with the final estimates, the function value, and KNITRO's exit status
 #' 
 knitro_ms = function( objFun, 
                       objGrad = NULL, 
