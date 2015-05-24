@@ -1,8 +1,5 @@
-# Use R_HHOME to support multiple R installations
-PKG_LIBS = `$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()"`
+# Link to KNITRO shared library
+PKG_LIBS = -L$(KNITRO)/lib -Wl,-rpath,$(KNITRO)/lib -dynamiclib -lknitro
 
-# Link knitro library
-PKG_LIBS += -L$(KNITRO)/lib -Wl,-rpath,$(KNITRO)/lib -dynamiclib -lknitro
-
-# add include directory
+# Include KNITRO's include directory so that we can find knitro.h
 PKG_CXXFLAGS = -I$(KNITRO)/include 
