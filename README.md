@@ -1,8 +1,8 @@
-knitroR: R Package for Knitro
+knitroR: R Package for KNITRO
 =======
 [![Build Status](https://travis-ci.org/jtilly/knitroR.svg?branch=master)](https://travis-ci.org/jtilly/knitroR)
 
-This package provides an `R` interface for the non-linear constraint optimizer [KNITRO](http://www.ziena.com/knitro.htm) optimizer from `R`. This is very much work in progress. At this point, this package only brings some of the functionality from KNITRO to `R`. I have managed to get this package to work under Linux, Mac OS, and Windows 7. The package works with KNITRO 8 and more recent versions. Installation instructions are below. 
+This package provides an `R` interface for the non-linear constraint optimizer [KNITRO](http://www.ziena.com/knitro.htm). This is very much work in progress. At this point, this package only brings some of the functionality from KNITRO to `R`. I have managed to get this package to work under Linux, Mac OS, and Windows 7. The package works with KNITRO 8 and more recent versions. Installation instructions are below. 
 
 KNITRO offers a very straightforward integration for `C++`. Examples are available [here](https://www.artelys.com/tools/knitro_doc/2_userGuide/gettingStarted/startCallableLibrary.html). `knitroR` uses this C++ integration as backend and provides a wrapper using [Rcpp](http://dirk.eddelbuettel.com/code/rcpp.html) that can be called from `R`. 
 
@@ -10,27 +10,36 @@ KNITRO offers a very straightforward integration for `C++`. Examples are availab
 
 Make sure you're installing `knitroR` on the proper architecture. If you have the 32bit version of KNITRO, you should use a 32bit version of `R` and only try to build a 32bit package (i.e. turn off multiarch support using the option `--no-multiarch`). Similarly, if you have the 64bit version of KNITRO, you should use a 64bit version of `R` and only try to build a 64bit package. 
 
-#### Linux and Mac OS X
-To install the package under Linux or Mac OS X you need to create the environmental variable `KNITRO`:
-```{bash}
-export KNITRO=/path/to/your/knitro/installation
-```
-
-Also, you need to make sure that `$KNITRO/lib` is in your library path, i.e. under Linux, you need to set
-
-```{bash}
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KNITRO/lib
-```
-and under Mac OS, you need to set
-```{bash}
-export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$KNITRO/lib
-```
-For any of this to work, I need to open `R` (or `RStudio`) through the command line. Then, install the package using the `devtools` package:
-
+#### Linux 
+To install the package under Linux you first need to set the environmental variables `KNITRO`, `ZIENA_LICENSE`, and `LD_LIBRARY_PATH`. This can be done directly in `R` (or `RStudio`). In the following, please adjust the paths and file names where appropriate:
 ```{r}
+Sys.setenv(KNITRO = "/path/to/knitro")
+Sys.setenv(ZIENA_LICENSE = "/path/to/knitro/ziena_license.txt")
+Sys.setenv(LD_LIBRARY_PATH = sprintf("%s:%s/lib", Sys.getenv("LD_LIBRARY_PATH"), Sys.getenv("KNITRO")))
 install.packages("devtools")
-library("devtools")
-install_github("jtilly/knitroR")
+devtools::install_github("jtilly/knitroR")
+```
+Alternatively, you can define these environmental variables using the command line:
+```{bash}
+export KNITRO=/path/to/knitro
+export ZIENA_LICENSE=/path/to/knitro/ziena_license.txt
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path/to/knitro/lib
+```
+
+#### Mac OS X
+Same as under Linux with the only exception that `LD_LIBRARY_PATH` is called `DYLD_LIBRARY_PATH`: This can be done directly in `R` (or `RStudio`). In the following, please adjust the paths and file names where appropriate:
+```{r}
+Sys.setenv(KNITRO = "/path/to/knitro")
+Sys.setenv(ZIENA_LICENSE = "/path/to/knitro/ziena_license.txt")
+Sys.setenv(DYLD_LIBRARY_PATH = sprintf("%s:%s/lib", Sys.getenv("DYLD_LIBRARY_PATH"), Sys.getenv("KNITRO")))
+install.packages("devtools")
+devtools::install_github("jtilly/knitroR")
+```
+Alternatively, you can define these environmental variables using the command line:
+```{bash}
+export KNITRO=/path/to/knitro
+export ZIENA_LICENSE=/path/to/knitro/ziena_license.txt
+export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/path/to/knitro/lib
 ```
 
 #### Windows
@@ -39,11 +48,10 @@ I'm assuming that KNITRO was installed successfully and that all environmental v
 
 To install this package under Windows you need to download and install [Rtools](http://cran.r-project.org/bin/windows/Rtools/). 
 
-If you're using KNITRO 9.1, then you can download and install `knitroR` using the devtools:
+If you're using KNITRO 9.1, then you can download and install `knitroR` right away:
 ```{r}
 install.packages("devtools")
-library("devtools")
-install_github("jtilly/knitroR")
+devtools::install_github("jtilly/knitroR")
 ```
 
 If you're using an older version than KNITRO 9.1, you need to
@@ -88,6 +96,3 @@ The files [demo/example1.R](https://github.com/jtilly/knitroR/blob/master/demo/e
 
 ## Documentation
 The reference manual is [here](https://jtilly.github.io/knitroR/knitroR.pdf "Documentation for knitroR").
-
-##Acknowledgment
-Romain Francois has a [KNITRO package](https://github.com/romainfrancois/KNITRO/) that helped me to better understand how to get KNITRO to work in `R`. His package provides a deeper integration of KNITRO that allows you to register an `R` function as KNITRO's callback.
