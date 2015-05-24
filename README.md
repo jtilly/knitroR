@@ -95,4 +95,4 @@ The files [demo/example1.R](https://github.com/jtilly/knitroR/blob/master/demo/e
 
 
 ## Documentation
-The reference manual is [here](https://jtilly.github.io/knitroR/knitroR.pdf "Documentation for knitroR").
+The reference manual is [here](https://jtilly.github.io/knitroR/knitroR.pdf "Documentation for knitroR: R Package for KNITRO").
