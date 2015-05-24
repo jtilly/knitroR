@@ -1,4 +1,4 @@
-# Example with two inequality constraint and one upper bound
+# Example with two inequality constraints and one upper bound
 #
 #  min   100 (x2 - x1^2)^2 + (1 - x1)^2
 #  s.t.  x1 x2 >= 1

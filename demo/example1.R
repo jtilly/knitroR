@@ -1,4 +1,4 @@
-# Example with inequality constraint and lower bounds
+# Example with one inequality constraint and lower bounds
 #
 # Taken from the Julia implementation of Knitro (knitrojl)
 #
