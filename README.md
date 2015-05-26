@@ -42,7 +42,7 @@ The code returns a list `results` that includes (among other things), KNITRO's e
 > results$fval
 [1] 0.1111111
 ```
-For more examples see [here](https://github.com/jtilly/knitroR/tree/master/demo). These examples illustrate how to pass user-defined gradients to KNITRO and how to work with equality constraints.
+For more examples see [here](https://github.com/jtilly/knitroR/tree/master/demo). These examples illustrate how to pass user-defined gradients and Jacobians to KNITRO.
 
 ## Documentation
 * The official documentation for KNITRO is available [here](http://www.artelys.com/tools/knitro_doc/).
