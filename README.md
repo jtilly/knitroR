@@ -24,14 +24,25 @@ c_inequality = function(x) {
     return(  x[1] + x[2] + 2.0*x[3] - 3.0  )
 }
 
+# specify non-negativity constraints
 lb = c(0, 0, 0)
 
 # define starting values
 x0 = c(0.5, 0.5, 0.5)
 
+# minimize the objective function using KNITRO
 results = knitro(objFun=objFun, c_inequality = c_inequality, lb=lb, x0=x0, options="options.opt")
 ```
-For more examples see [here](https://github.com/jtilly/knitroR/tree/master/demo).
+The code returns a list `results` that includes (among other things), KNITRO's exit status, the final parameters values, and the value of the objective function at the minimum.
+```
+> results$status
+[1] 0
+> results$x
+[1] 1.3333333 0.7777778 0.4444444
+> results$fval
+[1] 0.1111111
+```
+For more examples see [here](https://github.com/jtilly/knitroR/tree/master/demo). These examples illustrate how to pass user-defined gradients to KNITRO and how to work with equality constraints.
 
 ## Documentation
 * The official documentation for KNITRO is available [here](http://www.artelys.com/tools/knitro_doc/).
