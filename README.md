@@ -2,9 +2,40 @@ knitroR: R Package for KNITRO
 =======
 [![Build Status](https://travis-ci.org/jtilly/knitroR.svg?branch=master)](https://travis-ci.org/jtilly/knitroR)
 
-This package provides an `R` interface for the non-linear constraint optimizer [KNITRO](http://www.ziena.com/knitro.htm). This is very much work in progress. At this point, this package only brings some of the functionality from KNITRO to `R`. I have managed to get this package to work under Linux, Mac OS, and Windows 7. The package works with KNITRO 8 and more recent versions. Installation instructions are below. 
+This package provides an `R` interface for the non-linear constraint optimizer [KNITRO](http://www.ziena.com/knitro.htm). This is very much work in progress. At this point, this package only brings *some* of the functionality from KNITRO to `R`. I have managed to get this package to work under Linux, Mac OS, and Windows 7. The package works with KNITRO 8 and more recent versions. Installation instructions are below. 
 
-KNITRO offers a very straightforward integration for `C++`. Examples are available [here](https://www.artelys.com/tools/knitro_doc/2_userGuide/gettingStarted/startCallableLibrary.html). `knitroR` uses this C++ integration as backend and provides a wrapper using [Rcpp](http://dirk.eddelbuettel.com/code/rcpp.html) that can be called from `R`. 
+`knitroR` builds an `R` wrapper around [KNITRO's C++ interface](https://www.artelys.com/tools/knitro_doc/2_userGuide/gettingStarted/startCallableLibrary.html) using [Rcpp](http://dirk.eddelbuettel.com/code/rcpp.html).
+
+## Example
+
+Consider the following example. The goal is to minimize a smooth function in three parameters with an inequality constraint and non-negativity constraints on all three parameters.
+
+```{r}
+# load library
+library("knitroR")
+
+# define the objective function
+objFun = function(x) { 
+    9.0 - 8.0*x[1] - 6.0*x[2] - 4.0*x[3]+2.0*x[1]^2 + 2.0*x[2]^2 + x[3]^2 + 2.0*x[1]*x[2] + 2.0*x[1]*x[3]
+}
+
+# define the inequality constraint
+c_inequality = function(x) {
+    return(  x[1] + x[2] + 2.0*x[3] - 3.0  )
+}
+
+lb = c(0, 0, 0)
+
+# define starting values
+x0 = c(0.5, 0.5, 0.5)
+
+results = knitro(objFun=objFun, c_inequality = c_inequality, lb=lb, x0=x0, options="options.opt")
+```
+For more examples see [here](https://github.com/jtilly/knitroR/tree/master/demo).
+
+## Documentation
+* The official documentation for KNITRO is available [here](http://www.artelys.com/tools/knitro_doc/).
+* The reference manual for `knitroR` is available [here](https://jtilly.github.io/knitroR/knitroR.pdf "Documentation for knitroR: R Package for KNITRO"). 
 
 ##Installation
 
@@ -62,40 +93,6 @@ If you're using an older version than KNITRO 9.1, you need to
 install.packages("C:\Downloads\knitroR-master", repos = NULL, type="source", INSTALL_opts="--no-multiarch")
 ```
 where you need to change the path to `knitroR` appropriately. 
-
-## Example
-
-Consider the following example with inequality constraint and lower bounds. Taken from the Julia implementation of KNITRO [knitrojl](https://github.com/JuliaOpt/KNITRO.jl):
-
-```{r}
-# load library
-library("knitroR")
-
-# define the objective function
-objFun = function(x) { 
-    9.0 - 8.0*x[1] - 6.0*x[2] - 4.0*x[3]+2.0*x[1]^2 + 2.0*x[2]^2 + x[3]^2 + 2.0*x[1]*x[2] + 2.0*x[1]*x[3]
-}
-
-# define the inequality constraint
-c_inequality = function(x) {
-    return(  x[1] + x[2] + 2.0*x[3] - 3.0  )
-}
-
-lb = c(0, 0, 0)
-
-# define starting values
-x0 = c(0.5, 0.5, 0.5)
-
-results = knitro(objFun=objFun, c_inequality = c_inequality, lb=lb, x0=x0, options="options.opt")
-```
-
-Note that all options are defined in the text file `options.opt`. If this file doesn't exist, it will be created. 
-
-The files [demo/example1.R](https://github.com/jtilly/knitroR/blob/master/demo/example1.R) and [demo/example2.R](https://github.com/jtilly/knitroR/blob/master/demo/example2.R) contain more examples.
-
-
-## Documentation
-The reference manual is [here](https://jtilly.github.io/knitroR/knitroR.pdf "Documentation for knitroR: R Package for KNITRO").
 
 ##Acknowledgment
 Romain Francois has a [KNITRO package](https://github.com/romainfrancois/KNITRO/) that helped me to better understand how to get KNITRO to work in `R`. His package provides a deeper integration of KNITRO that allows you to register an `R` function as KNITRO's callback.
