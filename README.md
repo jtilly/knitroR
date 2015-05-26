@@ -2,7 +2,7 @@ knitroR: R Package for KNITRO
 =======
 [![Build Status](https://travis-ci.org/jtilly/knitroR.svg?branch=master)](https://travis-ci.org/jtilly/knitroR)
 
-`knitroR` provides an `R` interface for the non-linear constraint optimizer [KNITRO](http://www.ziena.com/knitro.htm). This is very much work in progress. At this point, this package only brings *some* of the functionality from KNITRO to `R`. I have managed to get this package to work under Linux, Mac OS, and Windows 7. The package works with KNITRO 8 and more recent versions. Installation instructions are below. 
+`knitroR` provides an `R` interface for the commercial non-linear constraint optimizer [KNITRO](http://www.ziena.com/knitro.htm). This is very much work in progress. At this point, this package only brings *some* of the functionality from KNITRO to `R`. I have managed to get this package to work under Linux, Mac OS, and Windows 7. The package works with KNITRO 8 and more recent versions. Installation instructions are below. 
 
 `knitroR` builds an `R` wrapper around [KNITRO's C++ interface](https://www.artelys.com/tools/knitro_doc/2_userGuide/gettingStarted/startCallableLibrary.html) using [Rcpp](http://dirk.eddelbuettel.com/code/rcpp.html).
 
