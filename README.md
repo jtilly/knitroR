@@ -11,7 +11,7 @@ knitroR: R Package for KNITRO
 Consider the following example. The goal is to minimize a smooth function in three parameters with an inequality constraint and non-negativity constraints on all three parameters.
 
 ```{r}
-# load library
+# load package
 library("knitroR")
 
 # define the objective function
