@@ -4,8 +4,8 @@ branches:
   - master
 env:
   global:
-  - BOOTSTRAP_LATEX=1 BOOTSTRAP_PANDOC=1
   - secure: HHFcQql1qPBqU0KkvshBHlIY6HLkByUVmOqdL+Jpjh6sEGJalUbsVxXlYZV9kxfOxbEU/KDc+kCQso6MWMSmsTfK+G4dF45ic8rg1BmPLa46djcBBA973SiuIwQC5S5B1ePTyHEjPVlgX3KXNrYnBiU9n7wZkXBS2lyKdl3kxtG2v+KZKjqsSL3rg2j/XXkJCpIPtlp//0yChB7QGE1EBZ2NR5eBlVBewblPehLy87q0Jre1YE95ktwX8ANLC4QkvozneEPB7yQEUNnk4/NcTlCirj04781EyNkwWzoYbVV98CEG5K8NWdMOLvIwFTo3JQhdE59Yd6Klzq4yCsqhJ2WnwWjwEBtI+JlKh3LVpdg0fRvwqkVAWO1sXJrIDRYkJuDJXB4KblXHhokRwlY/lwTrQBQAlUh8SUgwjptotWa8tr9GRQG06aQygAyE8U8Y6vopH9sTzxInGC42I2j4VlJJPMKv+29ydlTXEkq1t0lM+Ido+V5uLutpC2dN4NxIVnjbXgOX2tRtDgRYSBrmkNZsf1PwUrcu5s2aI9FrAzahMbWpe1tdioEkLNzFD7eGJScoycunyI3+Gd/ifeU82DjIQqPLISPYxjiTF6IY78WbZqe6ZzwNQ39ZYeUTjVi/4VaYjfupRWcLvSTtPahlD/rc8+bvSLBLgUtJBaMX98Y=
+  - BOOTSTRAP_LATEX=1 BOOTSTRAP_PANDOC=1
 sudo: required
 before_install:
 - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
