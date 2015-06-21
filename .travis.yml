@@ -1,23 +1,12 @@
-# I'm installing a mock knitro library to check if the package compiles. 
-# Since knitro is a commercial product, I don't think it's a good idea for
-# me to install their actual library on travis. The mock library contains 
-# the same functions as the real knitro library, yet it just returns 
-# meaningless nonsense. Unfortunately that means that I have turn off unit
-# tests on travis by setting the environmental variable KNITRO_MOCK=1.
-
 language: c
-
-branches: 
-  only: 
+branches:
+  only:
   - master
-
 env:
   global:
   - BOOTSTRAP_LATEX=1 BOOTSTRAP_PANDOC=1
-  - secure: gMzf4NU0/gme8B3bsT2k22dfQ14tQ/dJgNazWu1wCXfX+5qm/B4h6JXVkwtPYoB+ZXpEJ4obucmWZjHddJVsDJjXq9WJB/BF3jCEtvkJKls4pgpjv9ue2tGC6mOyLwjpBcFJBgXHWRsqMTK45MyZ+B2mBWBROpi7k4Et7FJ7OXMTeLCQI8MUQp41n922/tDOYPF6ZIhf4j9KSd67upcf2eiH7Dzj6FAdTK8Nas3qpGG1LmdFnFbE+R8e13zpQGkcW+LJx1K0K94xGDrmE7rgVoOYTxJyBdEtJdx9BttfqElLbEzV9Crjm4uofm223l7OmYNCDJdGQbijwAIYXpd/PZHbycrVfVNz8WheW0mQAHCb5OTCvxPc6j0Av3Mo7V81L+7WupKjtA6kV3w4LHKD9+1ub8g/G+eDuzknuxGddx5ucxsn4DPV8zIQjnDJW+7C7govC0m1ps8JJ/fZygBVBB6CpIm3r/tUFEd7mRVgfdl/2MJSM7G8CIB0p24nbo3dV1/tu8/15EMtAm7WQyVpg7bdbfxAf6GiiM7h04w/nYGYNeZnuM9NAV6p1cUcvQaOcE+xd3JFRvoRFZcJDfmRjBQFi3lOPj7+3Y1u50otf5aGF3ZMGckK3VWtDeUHP6+Ty7j4ug+hUY9DfrUJAyIxE2XNN+ybZGEjNbQEoE7gBlI=  
-
+  - secure: OeGLUDgOXyLomvU/1Uei/gArreuG2WTxSXCaMESOZwzWlIGws0AABe5bRuytFL6jEIXYFsXegrUfbph+Z33wQFew8lY7Sgu+vu0jyeuM1IFc9Nq8p0vUGWghlu4aCGE85irp3YvaKGJ7nLBzetY/AWvYGIdgqW66HHvgfMR/U9HiZUL/Wzgp7tDEP3hUiilAcRQXaA7xvDo6yGIFRwQjv598VA9P/fxPuVCb6MJzt63iDSAjY9izlmAfuZnbx0lY39jpPKZRTz2q2pd5Ll4A4rYi8aTq/CU5e8QFIUDDZjRrX+VjDjWht4cihEDqGAFagtlpy4YtKTt2/yXJweFsrTVguC4+/JdRpLalYQwgcdU2E728HKrB5MDA/CxdTQjr/ipgIwb3dDURsuJWNWJF82hw84/YiuiUmASLq9fhaS96neD9srXzXHgyTBmyztjSkxPv0vA6bP5a/JRuj4YjnXUB7XssVj+NX0D7ssGPtVtUvzCWgMUtkVcsBhRsULODXxT2MZfrGBWt3HdI9fMfSYjqfZokJzYSUB+Ez7+KFTqYndFHM+VABNWos0m7OyG0SAPDXdNJoCxEi+0wGFC/g3JLlAoglCYeWg/pKIKmjM0OFlNavjfQKxBx09HscQa2vvf0Dkbhre/fJtAtElfhprjxNBySJgkKTCZc95ZgQuI=
 sudo: required
-
 before_install:
 - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
 - chmod 755 ./travis-tool.sh
@@ -28,25 +17,21 @@ before_install:
 - export KNITRO=~/knitro-mock-library
 - export KNITRO_MOCK=1
 - export LD_LIBRARY_PATH=~/knitro-mock-library/lib
-
 install:
 - mkdir ~/.R
 - "./travis-tool.sh install_deps"
-
 script: "./travis-tool.sh run_tests"
-
 after_failure:
 - "./travis-tool.sh dump_logs"
-
 notifications:
   email:
     on_success: change
     on_failure: change
-
 after_success:
 - export REPO_NAME=${TRAVIS_REPO_SLUG#*/}
 - Rscript -e "install.packages('rmarkdown', repos='http://cran.rstudio.com')"
-- R CMD Rd2pdf ${TRAVIS_BUILD_DIR} -o ${TRAVIS_BUILD_DIR}/${REPO_NAME}.pdf --no-preview --no-index --force --batch
+- R CMD Rd2pdf ${TRAVIS_BUILD_DIR} -o ${TRAVIS_BUILD_DIR}/${REPO_NAME}.pdf --no-preview
+  --no-index --force --batch
 - cd ${TRAVIS_BUILD_DIR}
 - cd ..
 - git clone https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages
