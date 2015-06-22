@@ -5,7 +5,7 @@ branches:
 env:
   global:
   - secure: UVvfGn8RPcg2dh42pURry2WtSDaakBI77P+mbZgAEm28qI+PKO1g5pitTqg7rfkTQFmmBsCWvUZBVkJK6WOnSOrxEFwzYbdouYh2qL6xp5VlEgLbzLiJ5TI11miYg//TvwU3cCceEj76ROx+0rjC7XTR1pdfuvAAHvlpDEJk1gFlxamCB3sLizladbMVNrfBPN03vMAEG8LUY+NQbVHeU9vYcAUJlCU6eH+9Z8plQlrVP//0cKVH+Y3dzKUmYS6jzOdkRxS1yulG9C/D4zwoFxduqQzPbxKIp8ibRcp+fl8Kto5eDumGZZbBp6MmnvTT1PYdnXsQHKu/zONglHG/8mhHFmlA4buxiHEgx0EQgFpUMTWTTMoewT4uVzlhgAGDjnsBFlQKFyX2MYoRpkPZ4j4qmeJNr6Gy7MUvDiwXY8lClfagzhprrIgcu3RAiz/8IwjIqaNtlaw20im28wHBG1fsNgue26Knbe1ruHjrd8RAYpkMh3Nj9sogPB8Kd4/SPDMC6T+XbtMC04AgBmlKC9f9/EwdVaVD6u0ZvqLfSMN6Lt+FVzxu3vu3S1T0+Bzj8n+UGwzmmqo43CsS9zJB3tAbwusgeN+D8v6cUx9nA9pOtuBGn5BiNbsIueXTWIJadL3IOhFbv4O/HFpcDxxbRU3Wf2reVSvnZDBGw8HLYD8=
-  - BOOTSTRAP_LATEX=1 BOOTSTRAP_PANDOC=1
+  - BOOTSTRAP_LATEX=1 BOOTSTRAP_PANDOC=1 KNITRO=~/knitro-mock-library KNITRO_MOCK=1 LD_LIBRARY_PATH=~/knitro-mock-library/lib
 sudo: required
 before_install:
 - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
@@ -14,9 +14,6 @@ before_install:
 - curl -OL http://raw.github.com/jtilly/knitro-mock-library/master/install-knitro-mock.sh
 - chmod 755 ./install-knitro-mock.sh
 - "./install-knitro-mock.sh"
-- export KNITRO=~/knitro-mock-library
-- export KNITRO_MOCK=1
-- export LD_LIBRARY_PATH=~/knitro-mock-library/lib
 install:
 - mkdir ~/.R
 - "./travis-tool.sh install_deps"
@@ -30,8 +27,7 @@ notifications:
 after_success:
 - export REPO_NAME=${TRAVIS_REPO_SLUG#*/}
 - Rscript -e "install.packages('rmarkdown', repos='http://cran.rstudio.com')"
-- R CMD Rd2pdf ${TRAVIS_BUILD_DIR} -o ${TRAVIS_BUILD_DIR}/${REPO_NAME}.pdf --no-preview
-  --no-index --force --batch
+- R CMD Rd2pdf ${TRAVIS_BUILD_DIR} -o ${TRAVIS_BUILD_DIR}/${REPO_NAME}.pdf --no-preview --no-index --force --batch
 - cd ${TRAVIS_BUILD_DIR}
 - cd ..
 - git clone https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages
