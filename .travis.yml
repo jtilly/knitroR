@@ -1,3 +1,9 @@
+# I'm installing a knitro mock library to check if the package compiles. 
+# Since knitro is a commercial product, I don't think it's a good idea for
+# me to install their actual library on travis. The mock library contains 
+# the same functions as the real knitro library, yet it just returns 
+# meaningless nonsense. Unfortunately that means that I have turn off unit
+# testing on travis by setting the environmental variable KNITRO_MOCK=1.
 language: c
 branches:
   only:
