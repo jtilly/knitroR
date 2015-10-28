@@ -33,7 +33,7 @@ x0 = c(0.5, 0.5, 0.5)
 # minimize the objective function using KNITRO
 results = knitro(objFun=objFun, c_inequality = c_inequality, lb=lb, x0=x0, options="options.opt")
 ```
-The code returns a list `results` that includes (among other things), KNITRO's exit status, the final parameters values, and the value of the objective function at the minimum.
+The code returns a list `results` that includes (among other things) KNITRO's exit status, the final parameters values, and the value of the objective function at the minimum.
 ```
 > results$status
 [1] 0
