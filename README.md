@@ -58,8 +58,8 @@ To install the package under Linux you first need to set the environmental varia
 Sys.setenv(KNITRO = "/path/to/knitro")
 Sys.setenv(ZIENA_LICENSE = "/path/to/knitro/ziena_license.txt")
 Sys.setenv(LD_LIBRARY_PATH = sprintf("%s:%s/lib", Sys.getenv("LD_LIBRARY_PATH"), Sys.getenv("KNITRO")))
-install.packages("devtools")
-devtools::install_github("jtilly/knitroR")
+source("http://jtilly.io/install_github/install_github.R")
+install_github("jtilly/knitroR")
 ```
 Alternatively, you can define these environmental variables using the command line:
 ```{bash}
@@ -74,8 +74,8 @@ Same as under Linux with the only exception that `LD_LIBRARY_PATH` is called `DY
 Sys.setenv(KNITRO = "/path/to/knitro")
 Sys.setenv(ZIENA_LICENSE = "/path/to/knitro/ziena_license.txt")
 Sys.setenv(DYLD_LIBRARY_PATH = sprintf("%s:%s/lib", Sys.getenv("DYLD_LIBRARY_PATH"), Sys.getenv("KNITRO")))
-install.packages("devtools")
-devtools::install_github("jtilly/knitroR")
+source("http://jtilly.io/install_github/install_github.R")
+install_github("jtilly/knitroR")
 ```
 Alternatively, you can define these environmental variables using the command line:
 ```{bash}
@@ -92,8 +92,8 @@ To install this package under Windows you need to download and install [Rtools](
 
 If you're using KNITRO 9.1, then you can download and install `knitroR` right away:
 ```{r}
-install.packages("devtools")
-devtools::install_github("jtilly/knitroR")
+source("http://jtilly.io/install_github/install_github.R")
+install_github("jtilly/knitroR")
 ```
 
 If you're using an older version than KNITRO 9.1, you need to
