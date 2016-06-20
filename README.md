@@ -1,6 +1,5 @@
 knitroR: R Package for KNITRO
 =======
-[![Build Status](https://travis-ci.org/jtilly/knitroR.svg?branch=master)](https://travis-ci.org/jtilly/knitroR)
 
 **Update (6/20/2016)**: Artelys just released their own R interface for KNITRO 10. More details [here](https://www.artelys.com/tools/knitro_doc/3_referenceManual/knitroRreference.html). They aptly named it "KnitroR".
 
