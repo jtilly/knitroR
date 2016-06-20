@@ -2,7 +2,7 @@ knitroR: R Package for KNITRO
 =======
 [![Build Status](https://travis-ci.org/jtilly/knitroR.svg?branch=master)](https://travis-ci.org/jtilly/knitroR)
 
-**Update (6/20/2016)**: Artelys just released their own R interface for KNITRO 10. More details [here](https://www.artelys.com/tools/knitro_doc/3_referenceManual/knitroRreference.html).
+**Update (6/20/2016)**: Artelys just released their own R interface for KNITRO 10. More details [here](https://www.artelys.com/tools/knitro_doc/3_referenceManual/knitroRreference.html). They aptly named it "KnitroR".
 
 `knitroR` provides an `R` interface for the commercial non-linear constraint optimizer [KNITRO](http://www.ziena.com/knitro.htm). This is very much work in progress. At this point, this package only brings *some* of the functionality from KNITRO to `R`. I have managed to get this package to work under Linux, Mac OS, and Windows 7. The package works with KNITRO 8 and KNITRO 9.x. Installation instructions are below. 
 
